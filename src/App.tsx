@@ -5,15 +5,16 @@ import Main from './pages/Main';
 import Basket from './pages/Basket';
 import Product from './pages/Product';
 import ErrorPage from './pages/Error';
+import './App.scss';
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
-        <Route path="main" element={<Main />} />
-        <Route path="basket" element={<Basket />} />
-        <Route path="product/:id" element={<Product />} />
-        <Route path="error" element={<ErrorPage />} />
+      <Route path='/' element={<Layout />}>
+        <Route path='main' element={<Main />} />
+        <Route path='basket' element={<Basket />} />
+        <Route path='product/:id' element={<Product />} />
+        <Route path='error' element={<ErrorPage />} />
       </Route>
     </Routes>
   );
