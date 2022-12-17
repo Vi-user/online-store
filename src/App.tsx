@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Layout from './pages/Layout';
+import Layout from './components/Layout/Layout';
 import Main from './pages/Main';
 import Basket from './pages/Basket';
 import Product from './pages/Product';
@@ -9,14 +9,16 @@ import './App.scss';
 
 function App() {
   return (
-    <Routes>
-      <Route path='/' element={<Layout />}>
-        <Route path='main' element={<Main />} />
-        <Route path='basket' element={<Basket />} />
-        <Route path='product/:id' element={<Product />} />
-        <Route path='error' element={<ErrorPage />} />
-      </Route>
-    </Routes>
+    <>
+      <Routes>
+        <Route path='/' element={<Layout />}>
+          <Route index element={<Main />} />
+          <Route path='basket' element={<Basket />} />
+          <Route path='product/:id' element={<Product />} />
+          <Route path='error' element={<ErrorPage />} />
+        </Route>
+      </Routes>
+    </>
   );
 }
 
