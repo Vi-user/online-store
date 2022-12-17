@@ -5,7 +5,6 @@ import Main from './pages/Main';
 import Basket from './pages/Basket';
 import Product from './pages/Product';
 import ErrorPage from './pages/Error';
-import './App.scss';
 
 function App() {
   return (

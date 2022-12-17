@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import './product-details.scss';
+import './Product-details.scss';
 import { Product } from '../../utils/types';
 
 interface ProductDetailsProps {

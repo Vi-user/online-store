@@ -1,5 +1,5 @@
 import React from 'react';
-import ProductDetails from '../components/product-details/product-details';
+import ProductDetails from '../components/Product-details/Product-details';
 import { products } from '../utils/data';
 
 const Product = (): JSX.Element => {
