@@ -1,3 +1,5 @@
+import exp from "constants";
+
 type product = Record<string, string | number | string[]>;
 
 export interface Product extends product {
@@ -12,4 +14,13 @@ export interface Product extends product {
   category: string;
   thumbnail: string;
   images: string[];
+}
+
+export interface AppStateBasket {
+  id: number;
+  quantity: number;
+}
+
+export interface AppState {
+  basket: AppStateBasket[],
 }
