@@ -1,4 +1,4 @@
-import { Product, AppState, AppStateBasket } from './types';
+import { Product } from './types';
 
 export const products: Product[] = [
   {
@@ -1900,30 +1900,3 @@ export const products: Product[] = [
     ],
   },
 ];
-
-export const appState: AppState = {
-  basket: [
-    // {
-    //   id: 1,
-    //   quantity: 1,
-    // },
-  ],
-};
-
-export const changeBasketState = (id: number) => {
-  const isInBasket = appState.basket.findIndex((item) => item.id === id);
-  console.log(isInBasket);
-  if (isInBasket !== -1) {
-    appState.basket.splice(isInBasket, 1);
-  } else {
-    const newItem: AppStateBasket = {
-      id: id,
-      quantity: 1,
-    };
-    appState.basket.push(newItem);
-  }
-
-  console.log('appState.basket BEFORE', appState.basket);
-  //
-  console.log('appState.basket AFTER', appState.basket);
-};

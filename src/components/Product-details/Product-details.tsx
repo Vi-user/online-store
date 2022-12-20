@@ -1,8 +1,9 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useContext, useState } from 'react';
 import './Product-details.scss';
-import { AppStateBasket, Product } from '../../utils/types';
+import { Product } from '../../utils/types';
 import { useNavigate } from 'react-router-dom';
-import { changeBasketState, appState } from '../../utils/data';
+import { BasketContext } from '../../App';
+import { AppStateBasket, basketActionTypes } from '../../hooks/basketReducer';
 
 interface ProductDetailsProps {
   product: Product;
@@ -11,6 +12,8 @@ interface ProductDetailsProps {
 const details = ['description', 'discountPercentage', 'rating', 'stock', 'brand', 'category'];
 
 const ProductDetails: FC<ProductDetailsProps> = ({ product }: ProductDetailsProps) => {
+  const { basketState, dispatch } = useContext(BasketContext);
+
   const [data, setData] = useState({ imgLink: product.images[0], index: 0 });
 
   const [isActiveImg, setActiveClassToImg] = useState(0);
@@ -18,19 +21,12 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product }: ProductDetailsProp
     setActiveClassToImg(i);
   };
 
-  const [existence, setExistence] = useState(
-    appState.basket.some((item: AppStateBasket) => item.id === product.id)
-  );
-
   const viewBigSizeImg = (imgLink: string, index: number) => {
     setData({ imgLink, index });
     classToggle(index);
   };
 
-  const changeBasket = () => {
-    changeBasketState(product.id);
-    setExistence(!existence);
-  };
+  const isProductInBasket = basketState.map((el) => el.id).includes(product.id);
 
   const productImages = product.images.map((imageLink, index) => {
     return (
@@ -56,8 +52,14 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product }: ProductDetailsProp
 
   const navigate = useNavigate();
 
+  const amountInBasket = basketState
+    .map((el: AppStateBasket) => el.quantity)
+    .reduce((total: number, cur: number) => total + cur, 0);
+
+  console.log('basketState', basketState);
   return (
     <>
+      <h1>total amount:{amountInBasket}</h1>
       <div className='product-details__path'>
         STORE ➩ {product.category} ➩ {product.brand} ➩ {product.title}
       </div>
@@ -69,9 +71,22 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product }: ProductDetailsProp
           <div className='product-details__container'>{productDetails}</div>
           <div className='product-details__actions'>
             <span className='product-details__price'>&#8364; {product.price}</span>
-            <button className='product-details__button' onClick={() => changeBasket()}>
-              {existence ? 'Drop from cart' : 'Add to cart'}
-            </button>
+            {!isProductInBasket && (
+              <button
+                className='product-details__button'
+                onClick={() => dispatch({ type: basketActionTypes.ADD, payload: product.id })}
+              >
+                ADD
+              </button>
+            )}
+            {isProductInBasket && (
+              <button
+                className='product-details__button'
+                onClick={() => dispatch({ type: basketActionTypes.DELETE, payload: product.id })}
+              >
+                DROP
+              </button>
+            )}
             <button className='product-details__button' onClick={() => navigate('/basket')}>
               Buy now
             </button>
