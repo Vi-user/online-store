@@ -1,6 +1,5 @@
 import React from 'react';
 import { products } from '../../utils/data';
-import FilterCategory from '../Filter-category/Filter-category';
 import ProductGrid from '../Product-grid/Product-grid';
 import './Main_page.scss';
 
@@ -15,10 +14,7 @@ const Main_page = (): JSX.Element => (
       </div>
       <div className='nav__category'>
         <div className='category__title'>Category</div>
-        <div>
-          filter
-          <FilterCategory />
-        </div>
+        <div>filter</div>
       </div>
       <div className='nav__brand'></div>
       <div className='dual-slider__price'></div>
