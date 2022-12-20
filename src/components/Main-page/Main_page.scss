@@ -1,0 +1,40 @@
+.main_page{
+  display: flex;
+}
+
+.navBar {
+  width: 25%;
+  background: aqua;
+  border: 1px solid orange;
+  padding: .5%;
+  height: fit-content;
+}
+
+.button__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-bottom: 2%;
+  color: wheat;
+}
+
+.nav__category {
+  border: 1px solid orange;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin-bottom: 5%;
+  display: block;
+}
+
+.card-product__header{
+  display: flex;
+}
+
+.card-product{
+  width: 75%;
+}
+
+.product__grid{  
+  grid-template-columns: 11em 11em 11em 11em 11em 11em;
+  display: grid;
+}
