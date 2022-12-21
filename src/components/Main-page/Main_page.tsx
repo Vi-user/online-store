@@ -7,7 +7,7 @@ const cards: JSX.Element[] = products.map((item) => <ProductGrid key={item.id} p
 
 const Main_page = (): JSX.Element => (
   <div className='main_page'>
-    <div className='navBar'>
+    <div className='filters__panel'>
       <div className='button__top'>
         <button>Reset Filters</button>
         <button>Copy Link</button>
@@ -34,7 +34,6 @@ const Main_page = (): JSX.Element => (
         </div>
       </div>
       <div className='product__grid'>{cards}</div>
-      <div></div>
     </div>
   </div>
 );

@@ -10,7 +10,14 @@ const ProductGrid: FC<ProductGridProps> = ({ product }: ProductGridProps) => (
   <>
     <div className='product__card'>
       <div className='product__item'>
-        <img className='product__item' src={product.thumbnail} alt={product.title} />
+        <img
+          className='product__item'
+          src={product.thumbnail}
+          alt={product.title}
+          onClick={() => {
+            window.location.assign('http://localhost:3000/product/' + product.id);
+          }}
+        />
         <div className='product__text'>
           <div className='product__title'>{product.title}</div>
         </div>
