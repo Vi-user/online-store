@@ -1,6 +1,7 @@
 import React, { FC, useContext, useState } from 'react';
 import './Product-details.scss';
 import { Product } from '../../utils/types';
+import { EURO_SYMBOL } from '../../utils/data';
 import { useNavigate } from 'react-router-dom';
 import { BasketContext } from '../../App';
 import { AppStateBasket, basketActionTypes } from '../../hooks/basketReducer';
@@ -9,7 +10,14 @@ interface ProductDetailsProps {
   product: Product;
 }
 
-const details = ['description', 'discountPercentage', 'rating', 'stock', 'brand', 'category'];
+const details: string[] = [
+  'description',
+  'discountPercentage',
+  'rating',
+  'stock',
+  'brand',
+  'category',
+];
 
 const ProductDetails: FC<ProductDetailsProps> = ({ product }: ProductDetailsProps) => {
   const { basketState, dispatch } = useContext(BasketContext);
@@ -26,9 +34,9 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product }: ProductDetailsProp
     classToggle(index);
   };
 
-  const isProductInBasket = basketState.map((el) => el.id).includes(product.id);
+  const isProductInBasket: boolean = basketState.map((el) => el.id).includes(product.id);
 
-  const productImages = product.images.map((imageLink, index) => {
+  const productImages: JSX.Element[] = product.images.map((imageLink, index) => {
     return (
       <img
         key={product.id}
@@ -41,7 +49,7 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product }: ProductDetailsProp
     );
   });
 
-  const productDetails = details.map((detail) => {
+  const productDetails: JSX.Element[] = details.map((detail) => {
     return (
       <div className='detail-box' key={detail}>
         <p className='detail-box__name'>{detail}:</p>
@@ -56,7 +64,6 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product }: ProductDetailsProp
     .map((el: AppStateBasket) => el.quantity)
     .reduce((total: number, cur: number) => total + cur, 0);
 
-  console.log('basketState', basketState);
   return (
     <>
       <h1>total amount:{amountInBasket}</h1>
@@ -70,7 +77,9 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product }: ProductDetailsProp
           <img src={data.imgLink} alt='product img' className='product-details__big-img' />
           <div className='product-details__container'>{productDetails}</div>
           <div className='product-details__actions'>
-            <span className='product-details__price'>&#8364; {product.price}</span>
+            <span className='product-details__price'>
+              {EURO_SYMBOL} {product.price}
+            </span>
             {!isProductInBasket && (
               <button
                 className='product-details__button'
