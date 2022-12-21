@@ -1,14 +1,10 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './Product-details.scss';
 import { Product } from '../../utils/types';
-import { EURO_SYMBOL } from '../../utils/data';
-import { useNavigate } from 'react-router-dom';
+import { EURO_SYMBOL, products } from '../../utils/data';
+import { useNavigate, useParams } from 'react-router-dom';
 import { BasketContext } from '../../App';
 import { AppStateBasket, basketActionTypes } from '../../hooks/basketReducer';
-
-interface ProductDetailsProps {
-  product: Product;
-}
 
 const details: string[] = [
   'description',
@@ -19,7 +15,10 @@ const details: string[] = [
   'category',
 ];
 
-const ProductDetails: FC<ProductDetailsProps> = ({ product }: ProductDetailsProps) => {
+const ProductDetails = () => {
+  const { id } = useParams();
+  const product: Product = products.filter((el) => el.id === Number(id))[0];
+
   const { basketState, dispatch } = useContext(BasketContext);
 
   const [data, setData] = useState({ imgLink: product.images[0], index: 0 });
@@ -39,7 +38,7 @@ const ProductDetails: FC<ProductDetailsProps> = ({ product }: ProductDetailsProp
   const productImages: JSX.Element[] = product.images.map((imageLink, index) => {
     return (
       <img
-        key={product.id}
+        key={product.images[index]}
         src={imageLink}
         alt={product.title}
         className={`product-details__list-images 

@@ -1,5 +1,3 @@
-import exp from 'constants';
-
 type product = Record<string, string | number | string[]>;
 
 export interface Product extends product {
