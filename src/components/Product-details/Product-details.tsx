@@ -4,7 +4,7 @@ import { Product } from '../../utils/types';
 import { EURO_SYMBOL, products } from '../../utils/data';
 import { useNavigate, useParams } from 'react-router-dom';
 import { BasketContext } from '../../App';
-import { AppStateBasket, basketActionTypes } from '../../hooks/basketReducer';
+import { basketActionTypes } from '../../hooks/basketReducer';
 
 const details: string[] = [
   'description',
@@ -59,13 +59,8 @@ const ProductDetails = () => {
 
   const navigate = useNavigate();
 
-  const amountInBasket = basketState
-    .map((el: AppStateBasket) => el.quantity)
-    .reduce((total: number, cur: number) => total + cur, 0);
-
   return (
     <>
-      <h1>total amount:{amountInBasket}</h1>
       <div className='product-details__path'>
         STORE ➩ {product.category} ➩ {product.brand} ➩ {product.title}
       </div>

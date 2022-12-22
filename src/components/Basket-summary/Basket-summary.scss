@@ -1,0 +1,38 @@
+.basket-summary__container {
+  width: 40%;
+  border: 5px salmon solid;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.basket-summary {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 20px;
+  font-size: 2rem;
+  font-weight: bold;
+  >* {
+    width: 100%;
+  }
+}
+
+.basket-summary__title {
+  border-bottom: 2px solid black;
+}
+
+.basket-summary__button {
+  text-transform: uppercase;
+  width: 30%;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 5px;
+  background-color: #242c6f;
+  color: #cb2b2b;
+  border: 1px solid #b34c05;
+  transition: all 0.3s ease;
+  &:hover {
+    background: #484880;
+  }
+}
