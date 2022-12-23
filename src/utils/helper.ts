@@ -22,3 +22,12 @@ export function ProductsPriceInBasket(basketState: AppStateBasket[] | []): numbe
     return 0;
   }
 }
+
+export function itemPriceInBasket(productItem: AppStateBasket | undefined): number {
+  if (productItem) {
+    const productObject = products.find((product) => product.id === productItem.id);
+    return productObject ? productObject.price * productItem.quantity : 0;
+  } else {
+    return 0;
+  }
+}
