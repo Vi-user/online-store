@@ -9,6 +9,33 @@ import { itemPriceInBasket } from '../../utils/helper';
 const BasketList = () => {
   const { basketState, dispatch } = useContext(BasketContext);
 
+  const getQuantityInStock = (id: number): number | undefined => {
+    return products?.find((product: Product) => product.id === id)?.stock;
+  };
+
+  const getQuantityInBasket = (id: number): number | undefined => {
+    return basketState?.find((product: AppStateBasket) => product.id === id)?.quantity;
+  };
+
+  const isAvailableMinimum = (id: number) => {
+    const quantityInBasket = getQuantityInBasket(id);
+    if (quantityInBasket === 1) {
+      dispatch({ type: basketActionTypes.DELETE, payload: id });
+    } else {
+      dispatch({ type: basketActionTypes.DECREASE, payload: id });
+    }
+  };
+
+  const isEnoughInStock = (id: number) => {
+    const quantityInStock = getQuantityInStock(id);
+    const quantityInBasket = getQuantityInBasket(id);
+    if (quantityInStock === quantityInBasket) {
+      alert('Sorry, this is the maximum quantity of this item in stock at the moment');
+    } else {
+      dispatch({ type: basketActionTypes.INCREASE, payload: id });
+    }
+  };
+
   const basketItems = () => {
     console.log(basketState);
     if (Object.keys(basketState).length) {
@@ -40,21 +67,14 @@ const BasketList = () => {
                 <div className='product-list-item__quantity'>
                   <button
                     className='change-quantity'
-                    onClick={() =>
-                      dispatch({ type: basketActionTypes.DECREASE, payload: product.id })
-                    }
+                    onClick={() => isAvailableMinimum(product.id)}
                   >
                     -
                   </button>
                   <span>
                     {basketState.filter((el) => el.id === product.id).map((el) => el.quantity)[0]}
                   </span>
-                  <button
-                    className='change-quantity'
-                    onClick={() =>
-                      dispatch({ type: basketActionTypes.INCREASE, payload: product.id })
-                    }
-                  >
+                  <button className='change-quantity' onClick={() => isEnoughInStock(product.id)}>
                     +
                   </button>
                 </div>
