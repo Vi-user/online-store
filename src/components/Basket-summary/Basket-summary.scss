@@ -1,6 +1,11 @@
+@import './../../index';
+
 .basket-summary__container {
-  width: 40%;
-  border: 5px salmon solid;
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 5px $color-border solid;
   border-radius: 8px;
   padding: 10px;
   background-color: rgba(0, 0, 0, 0.3);
@@ -24,15 +29,15 @@
 
 .basket-summary__button {
   text-transform: uppercase;
-  width: 30%;
+  width: 50%;
   border-radius: 8px;
   cursor: pointer;
   padding: 5px;
-  background-color: #242c6f;
-  color: #cb2b2b;
+  background-color: $color-button;
+  color: $color-button_text;
   border: 1px solid #b34c05;
   transition: all 0.3s ease;
   &:hover {
-    background: #484880;
+    background: $color-button_hover;
   }
 }
