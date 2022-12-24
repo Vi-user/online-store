@@ -5,9 +5,11 @@ import { EURO_SYMBOL, products } from '../../utils/data';
 import { Product } from '../../utils/types';
 import { AppStateBasket, basketActionTypes } from '../../hooks/basketReducer';
 import { itemPriceInBasket } from '../../utils/helper';
+import { useNavigate } from 'react-router-dom';
 
-const BasketList = () => {
+const BasketList = (): JSX.Element => {
   const { basketState, dispatch } = useContext(BasketContext);
+  const navigate = useNavigate();
 
   const getQuantityInStock = (id: number): number | undefined => {
     return products?.find((product: Product) => product.id === id)?.stock;
@@ -17,7 +19,7 @@ const BasketList = () => {
     return basketState?.find((product: AppStateBasket) => product.id === id)?.quantity;
   };
 
-  const isAvailableMinimum = (id: number) => {
+  const isAvailableMinimum = (id: number): void => {
     const quantityInBasket = getQuantityInBasket(id);
     if (quantityInBasket === 1) {
       dispatch({ type: basketActionTypes.DELETE, payload: id });
@@ -26,7 +28,7 @@ const BasketList = () => {
     }
   };
 
-  const isEnoughInStock = (id: number) => {
+  const isEnoughInStock = (id: number): void => {
     const quantityInStock = getQuantityInStock(id);
     const quantityInBasket = getQuantityInBasket(id);
     if (quantityInStock === quantityInBasket) {
@@ -37,12 +39,11 @@ const BasketList = () => {
   };
 
   const basketItems = () => {
-    console.log(basketState);
     if (Object.keys(basketState).length) {
       const productObjects = basketState.map((el: AppStateBasket) => {
         return products.find((product: Product) => product.id === el.id);
       });
-      return productObjects.map((product, index) => {
+      return productObjects.map((product: Product | undefined, index: number) => {
         if (product) {
           return (
             <li key={product.id} className='product-list-item'>
@@ -51,8 +52,12 @@ const BasketList = () => {
                 className='product-list-item__photo'
                 src={product.images[0]}
                 alt={`${product.title} photo`}
+                onClick={() => navigate(`/product/${product.id}`)}
               />
-              <div className='product-list-item__box'>
+              <div
+                className='product-list-item__box'
+                onClick={() => navigate(`/product/${product.id}`)}
+              >
                 <h3 className='product-list-item__title'>{product.title}</h3>
                 <h3 className='product-list-item__description'>{product.description}</h3>
                 <div className='product-list-item__rating-discount'>
@@ -72,7 +77,11 @@ const BasketList = () => {
                     -
                   </button>
                   <span>
-                    {basketState.filter((el) => el.id === product.id).map((el) => el.quantity)[0]}
+                    {
+                      basketState
+                        .filter((el: AppStateBasket) => el.id === product.id)
+                        .map((el) => el.quantity)[0]
+                    }
                   </span>
                   <button className='change-quantity' onClick={() => isEnoughInStock(product.id)}>
                     +
@@ -92,7 +101,11 @@ const BasketList = () => {
         }
       });
     } else {
-      return 'Your basket is empty yet, wish you find something interesting for yourself in our store';
+      return (
+        <li>
+          Your basket is empty yet, wish you find something interesting for yourself in our store
+        </li>
+      );
     }
   };
 
