@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import './Product-grid.scss';
 import { Product } from '../../utils/types';
 import { useNavigate } from 'react-router-dom';
+import ButtonProductStatus from '../Button-product-status/Button-product-status';
 
 interface ProductGridProps {
   product: Product;
@@ -19,7 +20,7 @@ const ProductGrid: FC<ProductGridProps> = ({ product }: ProductGridProps) => {
             <div className='product__title'>{product.title}</div>
           </div>
           <div className='product__buttons'>
-            <button>Add to cart</button>
+            <ButtonProductStatus id={Number(product.id)} type={''} />
             <button onClick={() => navigate(`/product/${product.id}`)}>Details</button>
           </div>
         </div>
