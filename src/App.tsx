@@ -4,8 +4,8 @@ import Layout from './components/Layout/Layout';
 import Main from './pages/Main';
 import Basket from './pages/Basket';
 import ErrorPage from './pages/Error';
-import { createContext, useReducer, Dispatch } from 'react';
-import { BasketState, actionType, basketReducer } from './hooks/basketReducer';
+import { createContext, useReducer, Dispatch, useEffect } from 'react';
+import { BasketState, actionType, basketReducer, initBasket } from './hooks/basketReducer';
 import ProductDetails from './components/Product-details/Product-details';
 
 export const BasketContext = createContext<{
@@ -17,7 +17,11 @@ export const BasketContext = createContext<{
 });
 
 function App() {
-  const [basketState, dispatch] = useReducer(basketReducer, []);
+  const [basketState, dispatch] = useReducer(basketReducer, [], initBasket);
+
+  useEffect(() => {
+    localStorage.setItem('basketState', JSON.stringify(basketState));
+  }, [basketState]);
 
   return (
     <>

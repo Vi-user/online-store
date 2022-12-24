@@ -12,6 +12,13 @@ export interface AppStateBasket {
 
 export type BasketState = AppStateBasket[] | [];
 
+const initState: BasketState = [];
+
+export const initBasket = (initValue: BasketState = initState) => {
+  const basketJSON = localStorage.getItem('basketState');
+  return basketJSON !== null ? JSON.parse(basketJSON) : initValue;
+};
+
 export type actionType = {
   type: basketActionTypes;
   payload: number;
