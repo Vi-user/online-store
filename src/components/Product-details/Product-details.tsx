@@ -1,10 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import './Product-details.scss';
 import { Product } from '../../utils/types';
 import { EURO_SYMBOL, products } from '../../utils/data';
 import { useNavigate, useParams } from 'react-router-dom';
-import { BasketContext } from '../../App';
-import { AppStateBasket, basketActionTypes } from '../../hooks/basketReducer';
+import ButtonProductStatus from '../Button-product-status/Button-product-status';
 
 const details: string[] = [
   'description',
@@ -19,8 +18,6 @@ const ProductDetails = () => {
   const { id } = useParams();
   const product: Product = products.filter((el) => el.id === Number(id))[0];
 
-  const { basketState, dispatch } = useContext(BasketContext);
-
   const [data, setData] = useState({ imgLink: product.images[0], index: 0 });
 
   const [isActiveImg, setActiveClassToImg] = useState(0);
@@ -32,8 +29,6 @@ const ProductDetails = () => {
     setData({ imgLink, index });
     classToggle(index);
   };
-
-  const isProductInBasket: boolean = basketState.map((el) => el.id).includes(product.id);
 
   const productImages: JSX.Element[] = product.images.map((imageLink, index) => {
     return (
@@ -59,13 +54,8 @@ const ProductDetails = () => {
 
   const navigate = useNavigate();
 
-  const amountInBasket = basketState
-    .map((el: AppStateBasket) => el.quantity)
-    .reduce((total: number, cur: number) => total + cur, 0);
-
   return (
     <>
-      <h1>total amount:{amountInBasket}</h1>
       <div className='product-details__path'>
         STORE ➩ {product.category} ➩ {product.brand} ➩ {product.title}
       </div>
@@ -79,22 +69,7 @@ const ProductDetails = () => {
             <span className='product-details__price'>
               {EURO_SYMBOL} {product.price}
             </span>
-            {!isProductInBasket && (
-              <button
-                className='product-details__button'
-                onClick={() => dispatch({ type: basketActionTypes.ADD, payload: product.id })}
-              >
-                ADD
-              </button>
-            )}
-            {isProductInBasket && (
-              <button
-                className='product-details__button'
-                onClick={() => dispatch({ type: basketActionTypes.DELETE, payload: product.id })}
-              >
-                DROP
-              </button>
-            )}
+            <ButtonProductStatus id={Number(id)} type={'product-details__button'} />
             <button className='product-details__button' onClick={() => navigate('/basket')}>
               Buy now
             </button>

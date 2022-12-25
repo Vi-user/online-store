@@ -12,6 +12,13 @@ export interface AppStateBasket {
 
 export type BasketState = AppStateBasket[] | [];
 
+const initState: BasketState = [];
+
+export const initBasket = (initValue: BasketState = initState) => {
+  const basketJSON = localStorage.getItem('basketState');
+  return basketJSON !== null ? JSON.parse(basketJSON) : initValue;
+};
+
 export type actionType = {
   type: basketActionTypes;
   payload: number;
@@ -28,9 +35,25 @@ export const basketReducer = (basketState: [] | AppStateBasket[], action: action
         },
       ];
     case basketActionTypes.DELETE:
-      // const index = state.findIndex(el => el.id === payload);
-      // state.splice(index, 1);
       return [...basketState.filter((product) => product.id !== action.payload)];
+    case basketActionTypes.INCREASE:
+      return [
+        ...basketState.map((product) => {
+          if (product.id === action.payload) {
+            product.quantity++;
+          }
+          return product;
+        }),
+      ];
+    case basketActionTypes.DECREASE:
+      return [
+        ...basketState.map((product) => {
+          if (product.id === action.payload) {
+            product.quantity--;
+          }
+          return product;
+        }),
+      ];
     default:
       return basketState;
   }

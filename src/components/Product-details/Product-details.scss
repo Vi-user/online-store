@@ -1,3 +1,5 @@
+@import './../../index';
+
   .product-details__path {
     text-align: center;
     padding: 10px;
@@ -5,14 +7,14 @@
 
   .product-details {
     width: 80%;
-    background: #272a2d;
+    background: $color-block-background;
     margin: auto;
     border-radius: 8px;
     padding: 10px;
   }
 
   .product-details__title {
-    color: green;
+    color: $color-title-text;
     text-align: center;
     padding-bottom: 10px;
     border-bottom: 2px solid black;
@@ -38,7 +40,7 @@
     object-fit: cover;
     cursor: pointer;
     &_active {
-      border: 2px red solid;
+      border: 2px $color-border solid;
     }
   }
 
@@ -58,7 +60,7 @@
 
   .detail-box {
     width: 100%;
-    border: 1px solid #ee1e1e;
+    border: 1px solid $color-border;
     border-radius: 8px;
     text-align: center;
   }
@@ -87,9 +89,9 @@
   }
 
   .product-details__button {
-    background-color: #242c6f;
-    color: #cb2b2b;
-    border: 1px solid #b34c05;
+    background-color: $color-button;
+    color: $color-button_text;
+    border: 1px solid $color-border;
     border-radius: 8px;
     cursor: pointer;
     width: 100%;
@@ -97,6 +99,6 @@
     padding: 5px;
     transition: all 0.3s ease;
     &:hover {
-      background: #484880;
+      background: $color-button_hover;
     }
   }

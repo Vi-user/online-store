@@ -1,3 +1,5 @@
+@import './../../index';
+
 a {
   text-decoration: none;
 }
@@ -5,13 +7,13 @@ a {
 .header__wrapper, .footer__wrapper {
   max-width: 1420px;
   margin: auto;  
-  background-color: #FFDD22;  
+  background-color: $color-background_layout;
 }
 
 .main__wrapper {
   max-width: 1420px;  
   margin: auto;
-  background-color: #ffffff;
+  background-color: #6e7ca1;;
   min-height: calc(100vh - 80px);
 }
 
