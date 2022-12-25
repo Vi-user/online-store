@@ -28,6 +28,7 @@
 
 .card-product__header{
   display: flex;
+  justify-content: space-around;
 }
 
 .card-product{
@@ -37,4 +38,9 @@
 .product__grid{  
   grid-template-columns: 11em 11em 11em 11em 11em 11em;
   display: grid;
+}
+
+.category__container{
+  height: 20rem;
+  overflow: auto;
 }
