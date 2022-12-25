@@ -1900,3 +1900,5 @@ export const products: Product[] = [
     ],
   },
 ];
+
+export const EURO_SYMBOL = '\u20AC';

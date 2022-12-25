@@ -1,8 +1,10 @@
+@import './../../index';
+
 .product__card{
   position: relative;  
   padding-top: 12%;
   margin: 1%;
-  border: 1px solid orange;
+  border: 1px solid $color-border;
   border-radius: 0.5rem;
   overflow: hidden;
   display: flex;
@@ -38,7 +40,7 @@
   padding: 1%;
   font-size: 90%;
   text-align: center;
-  border-bottom: 1px solid orange;
+  border-bottom: 1px solid $color-border;
   white-space: nowrap;
   opacity: 0.9;
 }
@@ -52,7 +54,7 @@
 
    button{
     background-color: rgba(92, 154, 216, 0.8);
-    border: 1px solid orange;
+    border: 1px solid $color-border;
     padding-left: 2%;
     padding-right: 2%;
     font-size: 80%;
