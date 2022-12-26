@@ -1,19 +1,25 @@
 import React, { FC } from 'react';
-import { products } from '../../utils/data';
-import ProductGrid from '../Product-grid/Product-grid';
 import './Filter-category.scss';
 
-const FilterCategory = (props: any) => {  
+interface FilterCategory {
+  categories: string[];
+  onFilterChange: (event: { target: { checked: boolean; value: string } }) => void;
+}
+
+const FilterCategory: FC<FilterCategory> = ({ categories, onFilterChange }) => {
   return (
-    <div className='filter-list'>
-      <div className='category__bar'>
-        <input type='checkbox' id='smart' />
-        <label htmlFor='smart' onClick={props.onClickFilter}>
-          {props.category}
-          </label>
-        <span>5/5</span>
-      </div>
-    </div>
+    <ul>
+      {categories.map((category: string) => (
+        <div className='filter-list' key={category}>
+          <div className='category__bar'>
+            <label>
+              <input onChange={onFilterChange} type='checkbox' value={category} />
+              {category}
+            </label>
+          </div>
+        </div>
+      ))}
+    </ul>
   );
 };
 

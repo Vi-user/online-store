@@ -1,30 +1,46 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { products } from '../../utils/data';
 import { Product } from '../../utils/types';
 import FilterCategory from '../Filter-category/Filter-category';
-import ProductGrid from '../Product-grid/Product-grid';
 import './Main_page.scss';
+import ProductsList from './Prodcuts-list';
+import ProductsAmountCards from './Products-amount';
 
-let cards = products.map((item) => <ProductGrid key={item.id} product={item} />);
+const CATEGORIES: string[] = [];
+Array.from(new Set(products.map((el) => el.category))).map((category) => CATEGORIES.push(category));
 
-const filterCatgory= Array.from(new Set(products.map((el) => el.category))).map((category) => (
-  <FilterCategory onClickFilter={() => {console.log('categ', category)}} key={category} category={category} />
-));
+function Main_page() {
+  const [state, setState] = useState({
+    productCard: products,
+    filters: new Set(),
+  });
 
-// console.log(cards[0].props.product.category)
-// console.log(filterCatgory[0].props.category)
+  const handleFilterChange = useCallback(
+    (event: { target: { checked: boolean; value: string } }) => {
+      setState((previousState) => {
+        const filters = new Set(previousState.filters);
+        let productCard: Product[] = products!;
 
-// cards.map((el) => console.log(el.props.product.category))
-// filterCatgory.map((el) => (el.props.category))
+        if (event.target.checked) {
+          filters.add(event.target.value);
+        } else {
+          filters.delete(event.target.value);
+        }
 
-const Main_page = (): JSX.Element => {
+        if (filters.size) {
+          productCard = productCard.filter((product) => {
+            return filters.has(product.category);
+          });
+        }
 
-  const [countCards, setCount] = React.useState(cards)
-  console.log(countCards[0].props.product.category)
-  
-  const filterCardsCategory = () => {
-    
-  }
+        return {
+          filters,
+          productCard,
+        };
+      });
+    },
+    [setState]
+  );
 
   return (
     <div className='main_page'>
@@ -35,7 +51,9 @@ const Main_page = (): JSX.Element => {
         </div>
         <div className='nav__category'>
           <div className='category__title'>Category</div>
-          <div className='category__container'>{filterCatgory}</div>
+          <div className='category__container'>
+            <FilterCategory categories={CATEGORIES} onFilterChange={handleFilterChange} />
+          </div>
         </div>
         <div className='nav__brand'></div>
         <div className='dual-slider__price'></div>
@@ -44,20 +62,17 @@ const Main_page = (): JSX.Element => {
       <div className='card-product'>
         <div className='card-product__header'>
           <button>Sort by discount</button>
-          <div className='found'>
-            Found:
-            <span>{cards.length}</span>
-          </div>
+          <ProductsAmountCards productCard={state.productCard} />
           <div className='search-product'></div>
           <div className='button__product-grid'>
             <button></button>
             <button></button>
           </div>
         </div>
-        <div className='product__grid'>{countCards}</div>
+        <ProductsList productCard={state.productCard} />
       </div>
     </div>
-  )
-};
+  );
+}
 
 export default Main_page;
