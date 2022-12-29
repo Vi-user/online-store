@@ -6,6 +6,9 @@ import { Product } from '../../utils/types';
 import { AppStateBasket, basketActionTypes } from '../../hooks/basketReducer';
 import { itemPriceInBasket } from '../../utils/helper';
 import { useNavigate } from 'react-router-dom';
+import Pagination from '../Pagination/Pagination';
+import { usePagination } from '../../hooks/pagination';
+import './Basket-list.scss';
 
 const BasketList = (): JSX.Element => {
   const { basketState, dispatch } = useContext(BasketContext);
@@ -109,9 +112,30 @@ const BasketList = (): JSX.Element => {
     }
   };
 
+  const [productsPerPage, setProductsPerPage] = useState(10);
+  const { page, startIndexOfPage, endIndexOfPage, prevPage, nextPage } = usePagination(
+    productsPerPage,
+    basketState
+  );
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    Number(e.target.value) > 0 ? setProductsPerPage(Number(e.target.value)) : 1;
+  };
+
+  const productsToShow = basketState.slice(startIndexOfPage, endIndexOfPage);
+
   return (
     <div className='basket-list'>
-      <h2 className='basket-list__title'>Products in Basket</h2>
+      <div className='basket-list__title-container'>
+        <h2 className='basket-list__title'>Products in Basket</h2>
+        <Pagination
+          page={page}
+          productsPerPage={productsPerPage}
+          prevPage={prevPage}
+          nextPage={nextPage}
+          handleChange={handleChange}
+        />
+      </div>
       <ul className='basket-list__box'>{basketItems()}</ul>
     </div>
   );
