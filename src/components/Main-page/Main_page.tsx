@@ -1,6 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { products } from '../../utils/data';
 import { Product } from '../../utils/types';
+import DualSlider from '../Dual-slider/Dual-slider';
 import FilterCategory from '../Filter-category/Filter-category';
 import './Main_page.scss';
 import ProductsList from './Prodcuts-list';
@@ -9,17 +10,24 @@ import ProductsAmountCards from './Products-amount';
 const CATEGORIES: string[] = [];
 Array.from(new Set(products.map((el) => el.category))).map((category) => CATEGORIES.push(category));
 
-function Main_page() {
+const BRAND: string[] = [];
+Array.from(new Set(products.map((el) => el.brand))).map((brand) => BRAND.push(brand));
+
+const maxPriceProduct = products.reduce((acc, curr) => acc.price > curr.price ? acc : curr)
+const minPriceProduct = products.reduce((acc, curr) => acc.price < curr.price ? acc : curr)
+const FilterPrice = products.filter((el) => el.price > 1600)
+
+function Main_page(): JSX.Element {
   const [state, setState] = useState({
     productCard: products,
     filters: new Set(),
   });
-
+console.log(state.productCard)
   const handleFilterChange = useCallback(
     (event: { target: { checked: boolean; value: string } }) => {
       setState((previousState) => {
         const filters = new Set(previousState.filters);
-        let productCard: Product[] = products!;
+        let productCard: Product[] = products;
 
         if (event.target.checked) {
           filters.add(event.target.value);
@@ -49,14 +57,25 @@ function Main_page() {
           <button>Reset Filters</button>
           <button>Copy Link</button>
         </div>
-        <div className='nav__category'>
+        <div className='nav__category filters'>
           <div className='category__title'>Category</div>
           <div className='category__container'>
             <FilterCategory categories={CATEGORIES} onFilterChange={handleFilterChange} />
           </div>
         </div>
-        <div className='nav__brand'></div>
-        <div className='dual-slider__price'></div>
+        <div className='nav__brand filters'>
+          <div className='category__title'>Brand</div>
+          <div className='category__container'>
+            <FilterCategory categories={BRAND} onFilterChange={handleFilterChange} />
+          </div>
+        </div>
+        <div className='dual-slider__price'>
+          <DualSlider
+            min={minPriceProduct.price}
+            max={maxPriceProduct.price}
+            onChange={({ min, max }) => console.log(`min = ${min}, max = ${max}`)}
+          />
+        </div>
         <div className='dual-slider__stock'></div>
       </div>
       <div className='card-product'>

@@ -4,7 +4,7 @@
 
 .filters__panel {
   width: 25%;
-  background: aqua;
+  background: #6e7ca1;
   border: 1px solid orange;
   padding: .5%;
   height: fit-content;
@@ -18,7 +18,7 @@
   color: wheat;
 }
 
-.nav__category {
+.filters {
   border: 1px solid orange;
   border-radius: 0.5rem;
   overflow: hidden;
@@ -43,4 +43,16 @@
 .category__container{
   height: 20rem;
   overflow: auto;
+}
+
+.dual-slider__price{
+  height: 14vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  h3 {
+    padding-bottom: 15px;
+  }
 }

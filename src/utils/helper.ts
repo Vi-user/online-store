@@ -31,3 +31,13 @@ export function itemPriceInBasket(productItem: AppStateBasket | undefined): numb
     return 0;
   }
 }
+
+// export function filteredProduct = () => {
+//   let newProduct = products;
+//   if(sort) {
+//     newProduct = newProduct.sort((a, b) => {
+//       sort === "low" ? a.price - b.price : b.price - a.price
+//     })
+//   }
+//   return newProduct;
+// }

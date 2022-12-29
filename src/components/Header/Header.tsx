@@ -5,9 +5,7 @@ import { ProductsPriceInBasket, ProductsAmountInBasket } from '../../utils/helpe
 import { BasketContext } from '../../App';
 import { EURO_SYMBOL } from '../../utils/data';
 
-// interface HeaderProps {JSX: Element;}
-// const Header: FC<HeaderProps> = () => (
-const Header = () => {
+const Header = (): JSX.Element => {
   const { basketState } = useContext(BasketContext);
 
   return (
