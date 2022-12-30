@@ -22,64 +22,10 @@
 }
 
 .basket-list {
-  border: 5px salmon solid;
+  border: 5px $color-border solid;
   border-radius: 8px;
   padding: 10px;
   background-color: $color-block-background;
-}
-
-.product-list-item {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  border-bottom: 2px solid black;
-  padding: 5px 0;
-  justify-content: space-between;
-}
-
-.product-list-item__index {
-  padding: 5px 10px;
-  border-radius: 50%;
-  border: 2px $color-border solid;
-  background-color: $color-button_background;
-  color: $color-button_text;
-}
-
-.product-list-item__photo {
-  width: 100px;
-  height: 80px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.product-list-item__box {
-  text-align: center;
-  width: 70%;
-  cursor: pointer;
-}
-
-.product-list-item__rating-discount {
-  display: flex;
-  justify-content: space-evenly;
-}
-
-.product-list-item__title {
-  font-size: 2rem;
-  border-bottom: 2px solid black;
-  text-shadow: 1px 1px #000;
-}
-
-
-.product-list-item__stock-price {
-  width: 15%;
-  text-align: center;
-}
-
-.product-list-item__quantity {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  margin: 10px 0;
 }
 
 .basket-summary__promo-code {
@@ -88,11 +34,3 @@
   border-radius: 8px;
 }
 
-.change-quantity {
-  padding: 5px 10px;
-  border-radius: 50%;
-  border: 2px $color-border solid;
-  background-color: $color-button_background;
-  color: $color-button_text;
-  font-weight: bold;
-}
