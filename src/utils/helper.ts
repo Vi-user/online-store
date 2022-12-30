@@ -1,7 +1,7 @@
 import { AppStateBasket } from '../hooks/basketReducer';
 import { products } from './data';
 
-export function ProductsAmountInBasket(basketState: AppStateBasket[] | []): number {
+export function productsAmountInBasket(basketState: AppStateBasket[] | []): number {
   if (Object.keys(basketState).length) {
     return basketState
       .map((el: AppStateBasket) => el.quantity)
@@ -11,7 +11,7 @@ export function ProductsAmountInBasket(basketState: AppStateBasket[] | []): numb
   }
 }
 
-export function ProductsPriceInBasket(basketState: AppStateBasket[] | []): number {
+export function productsPriceInBasket(basketState: AppStateBasket[] | []): number {
   if (Object.keys(basketState).length) {
     const basketItemsSums = basketState.map((el: AppStateBasket) => {
       const productObject = products.find((product) => product.id === el.id);
@@ -30,4 +30,11 @@ export function itemPriceInBasket(productItem: AppStateBasket | undefined): numb
   } else {
     return 0;
   }
+}
+
+export function getSumFormat(sum: number): string {
+  return sum.toLocaleString('de-DE', {
+    style: 'currency',
+    currency: 'EUR',
+  });
 }

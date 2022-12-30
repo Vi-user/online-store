@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Product } from '../../utils/types';
 import { AppStateBasket } from '../../hooks/basketReducer';
-import { itemPriceInBasket } from '../../utils/helper';
+import { itemPriceInBasket, getSumFormat } from '../../utils/helper';
 import './Product-list-item.scss';
 
 interface ProductListItemProps {
@@ -55,12 +55,7 @@ const ProductListItem: FC<ProductListItemProps> = ({
             +
           </button>
         </div>
-        <div className='product-list-item__price'>
-          {itemPriceInBasket(basketObj).toLocaleString('de-DE', {
-            style: 'currency',
-            currency: 'EUR',
-          })}
-        </div>
+        <div className='product-list-item__price'>{getSumFormat(itemPriceInBasket(basketObj))}</div>
       </div>
     </li>
   );

@@ -1,9 +1,8 @@
 import React, { useContext } from 'react';
 import './Header.scss';
 import { Link } from 'react-router-dom';
-import { ProductsPriceInBasket, ProductsAmountInBasket } from '../../utils/helper';
+import { productsPriceInBasket, productsAmountInBasket, getSumFormat } from '../../utils/helper';
 import { BasketContext } from '../../App';
-import { EURO_SYMBOL } from '../../utils/data';
 
 // interface HeaderProps {JSX: Element;}
 // const Header: FC<HeaderProps> = () => (
@@ -17,11 +16,10 @@ const Header = () => {
           Online Store
         </Link>
         <div className='cart__total'>
-          Cart total: {EURO_SYMBOL}{' '}
-          {new Intl.NumberFormat('ru-RU').format(ProductsPriceInBasket(basketState))}
+          Cart total: {getSumFormat(productsPriceInBasket(basketState))}
         </div>
         <Link className='logo__basket' to='/basket'>
-          <span className='logo__basket-sum'>{ProductsAmountInBasket(basketState)}</span>
+          <span className='logo__basket-sum'>{productsAmountInBasket(basketState)}</span>
         </Link>
       </header>
     </div>
