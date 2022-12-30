@@ -4,14 +4,14 @@
   display: flex;
   gap: 10px;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
   font-weight: bold;
 }
 
 .item-quantity {
   padding: 5px 8px;
   border-radius: 8px;
-  width: 40px;
+  width: 50px;
   border: 2px $color-border solid;
   background-color: $color-button_background;
   color: #fff;
