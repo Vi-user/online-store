@@ -39,32 +39,24 @@ const BasketList = (): JSX.Element => {
   };
 
   const basketItems = () => {
-    if (basketState.length === 0) {
-      return (
-        <li>
-          Your basket is empty yet, wish you find something interesting for yourself in our store
-        </li>
-      );
-    } else {
-      return productsToShow.map((el: AppStateBasket, index) => {
-        const product = products.find((product: Product) => product.id === el.id);
+    return productsToShow.map((el: AppStateBasket, index) => {
+      const product = products.find((product: Product) => product.id === el.id);
 
-        if (product) {
-          return (
-            <ProductListItem
-              key={product.id}
-              basketObj={el}
-              product={product}
-              index={index}
-              startIndexOfPage={startIndexOfPage}
-              isAvailableMinimum={isAvailableMinimum}
-              isEnoughInStock={isEnoughInStock}
-              getQuantityInBasket={getQuantityInBasket}
-            />
-          );
-        }
-      });
-    }
+      if (product) {
+        return (
+          <ProductListItem
+            key={product.id}
+            basketObj={el}
+            product={product}
+            index={index}
+            startIndexOfPage={startIndexOfPage}
+            isAvailableMinimum={isAvailableMinimum}
+            isEnoughInStock={isEnoughInStock}
+            getQuantityInBasket={getQuantityInBasket}
+          />
+        );
+      }
+    });
   };
 
   const [productsPerPage, setProductsPerPage] = useState(10);
