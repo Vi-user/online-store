@@ -10,7 +10,7 @@ export const usePagination = (productsPerPage: number, arrayOfProducts: AppState
 
   useEffect(() => {
     if (arrayOfProducts.length === (page - 1) * productsPerPage) setPage(page - 1);
-  }, [arrayOfProducts]);
+  }, [page, setPage, productsPerPage, arrayOfProducts]);
 
   const endIndexOfPage: number = productsPerPage * page;
   const startIndexOfPage: number = endIndexOfPage - productsPerPage;

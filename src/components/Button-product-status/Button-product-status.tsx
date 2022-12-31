@@ -13,22 +13,22 @@ const ButtonProductStatus: FC<ButtonProductStatusProps> = ({
 }: ButtonProductStatusProps) => {
   const { basketState, dispatch } = useContext(BasketContext);
   const isProductInBasket: boolean = basketState.map((el: AppStateBasket) => el.id).includes(id);
+
   return (
     <>
-      {!isProductInBasket && (
-        <button
-          className={type}
-          onClick={() => dispatch({ type: basketActionTypes.ADD, payload: id })}
-        >
-          Add to cart
-        </button>
-      )}
-      {isProductInBasket && (
+      {isProductInBasket ? (
         <button
           className={type}
           onClick={() => dispatch({ type: basketActionTypes.DELETE, payload: id })}
         >
           Drop from cart
+        </button>
+      ) : (
+        <button
+          className={type}
+          onClick={() => dispatch({ type: basketActionTypes.ADD, payload: id })}
+        >
+          Add to cart
         </button>
       )}
     </>
