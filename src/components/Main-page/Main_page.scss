@@ -29,6 +29,13 @@
 .card-product__header{
   display: flex;
   justify-content: space-around;
+  align-items: center;
+  button{
+    border: 2px solid #0085f9;
+    height: 42px;
+    border-radius: 7px;
+    font-size: 16px;
+  }
 }
 
 .card-product{
@@ -45,7 +52,7 @@
   overflow: auto;
 }
 
-.dual-slider__price{
+.dual-slider{
   height: 14vh;
   display: flex;
   align-items: center;
@@ -55,4 +62,18 @@
   h3 {
     padding-bottom: 15px;
   }
+}
+
+.search-product input{
+  border: 2px solid #0085f9;
+  height: 42px;
+  border-radius: 7px;
+  font-size: 16px;
+}
+
+.button__top > button{
+  border: 2px solid #0085f9;
+  height: 42px;
+  border-radius: 7px;
+  font-size: 16px;
 }

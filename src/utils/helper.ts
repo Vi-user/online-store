@@ -32,12 +32,24 @@ export function itemPriceInBasket(productItem: AppStateBasket | undefined): numb
   }
 }
 
-// export function filteredProduct = () => {
-//   let newProduct = products;
-//   if(sort) {
-//     newProduct = newProduct.sort((a, b) => {
-//       sort === "low" ? a.price - b.price : b.price - a.price
-//     })
-//   }
-//   return newProduct;
-// }
+export function handleFilterChangeCategory(
+  e: { target: { checked: boolean; value: string } },
+  setfilterCategory: React.Dispatch<React.SetStateAction<string[]>>
+) {
+  setfilterCategory((previousState) => {
+    return e.target.checked
+      ? [...previousState, e.target.value]
+      : previousState.filter((v) => v !== e.target.value);
+  });
+}
+
+export function handleFilterChangeBrand(
+  e: { target: { checked: boolean; value: string } },
+  setfilterBrand: React.Dispatch<React.SetStateAction<string[]>>
+) {
+  setfilterBrand((previousState) => {
+    return e.target.checked
+      ? [...previousState, e.target.value]
+      : previousState.filter((v) => v !== e.target.value);
+  });
+}
