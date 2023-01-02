@@ -2,9 +2,13 @@ import React, { useContext } from 'react';
 import { productsAmountInBasket, productsPriceInBasket, getSumFormat } from '../../utils/helper';
 import { BasketContext } from '../../App';
 import './Basket-summary.scss';
+import useModal from '../../hooks/modalWindow';
+import ModalWindow from '../Modal-window/Modal-window';
 
 const BasketSummary = () => {
   const { basketState } = useContext(BasketContext);
+
+  const { isOpen, changeModalVisibility } = useModal();
 
   return (
     <div className='basket-summary'>
@@ -15,7 +19,10 @@ const BasketSummary = () => {
         <input type='text' placeholder='Enter promo code' className='basket-summary__promo-code' />
       </span>
       <span>
-        <button className='basket-summary__button'>buy now</button>
+        <button className='basket-summary__button' onClick={changeModalVisibility}>
+          buy now
+        </button>
+        <ModalWindow isOpen={isOpen} changeModalVisibility={changeModalVisibility} />
       </span>
     </div>
   );
