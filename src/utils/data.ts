@@ -1902,3 +1902,5 @@ export const products: Product[] = [
 ];
 
 export const EURO_SYMBOL = '\u20AC';
+export const PREV_ARROW = '\u2190';
+export const NEXT_ARROW = '\u2192';
