@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import './Modal-window.scss';
+import PersonalDataForm from '../Personal-data-Form/Personal-data-Form';
 
 interface ModalWindowProps {
   isOpen: boolean;
@@ -11,7 +12,12 @@ const ModalWindow: FC<ModalWindowProps> = ({ isOpen, changeModalVisibility }) =>
     <>
       {isOpen && (
         <div className='modal-overlay' onClick={changeModalVisibility}>
-          <div className='modal-window'>ModalWindow Component</div>
+          <div
+            className='modal-window'
+            onClick={(e: React.MouseEvent<HTMLDivElement, MouseEvent>) => e.stopPropagation()}
+          >
+            <PersonalDataForm />
+          </div>
         </div>
       )}
     </>

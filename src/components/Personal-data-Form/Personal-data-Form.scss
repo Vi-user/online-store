@@ -1,0 +1,48 @@
+@import './../../index';
+
+.personal-data__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.form-title {
+  margin: 20px;
+  color: $color-title-text;
+}
+
+.form-input {
+  background: #2b2727;
+  color: #f8f89a;
+  border-radius: 8px;
+  padding: 5px;
+  width: 80%;
+}
+
+.error-message {
+  color: red;
+  font-size: 1.5rem;
+}
+
+.form-button {
+  text-transform: uppercase;
+  width: 30%;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 5px;
+  margin-top: 20px;
+  font-weight: bold;
+  background-color: $color-button;
+  color: $color-button_text;
+  border: 1px solid #b34c05;
+  transition: all 0.3s ease;
+  &:hover {
+    background: $color-button_hover;
+  }
+  &:disabled {
+    cursor: initial;
+    background: gray;
+    color: lightgrey;
+  }
+}
