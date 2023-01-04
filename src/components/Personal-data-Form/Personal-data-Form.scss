@@ -18,11 +18,41 @@
   border-radius: 8px;
   padding: 5px;
   width: 80%;
+  &:focus {
+    border: 1px red solid;
+  }
 }
 
 .error-message {
   color: red;
   font-size: 1.5rem;
+}
+
+.credit-card__container {
+  width: 60%;
+  height: 20%;
+  background: linear-gradient(to right, #000099 0%, #3366ff 100%);
+  border: 4px #f67e70 solid;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px 10px;
+}
+
+.form-input__credit-card {
+  border-radius: 8px;
+  padding: 5px;
+  border: 1px orange solid;
+  text-align: center;
+  &:focus {
+    border: 1px red solid;
+  }
+}
+
+.form-label {
+  font-size: 1.5rem;
+  color: #f8f89a;
 }
 
 .form-button {
