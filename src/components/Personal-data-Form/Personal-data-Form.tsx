@@ -1,145 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { BasketContext } from '../../App';
+import { basketActionTypes } from '../../hooks/basketReducer';
+import { useInput } from '../../hooks/formInput';
 import './Personal-data-Form.scss';
 
-interface Validation {
-  isEmpty?: boolean;
-  name?: boolean;
-  phone?: boolean;
-  address?: boolean;
-  email?: boolean;
-  creditCardNumber?: boolean;
-  creditCardExpDate?: boolean;
-  creditCardCVV?: boolean;
-}
-
-const CVV_LENGTH = 3;
-const EXP_DATE_LENGTH = 5;
-const CARD_NUMBER_LENGTH = 19;
-
-const useValidation = (value: string, validations: Validation) => {
-  const [isEmpty, setEmpty] = useState(true);
-  const [nameError, setNameError] = useState(false);
-  const [phoneError, setPhoneError] = useState(false);
-  const [addressError, setAddressError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [creditCardNumberError, setCreditCardNumberError] = useState(false);
-  const [creditCardExpDateError, setCreditCardExpDateError] = useState(false);
-  const [creditCardCVVError, setCreditCardCVVError] = useState(false);
-  const [inputValid, setInputValid] = useState(true);
-
-  useEffect(() => {
-    for (const validation in validations) {
-      switch (validation) {
-        case 'isEmpty':
-          value ? setEmpty(false) : setEmpty(true);
-          break;
-        case 'name': {
-          const re = /[A-Za-z]{3,}.[A-Za-z]{3,}/;
-          re.test(String(value).toLowerCase()) ? setNameError(false) : setNameError(true);
-          break;
-        }
-        case 'phone': {
-          const re = /^\+\d{9,}$/;
-          re.test(String(value).trim()) ? setPhoneError(false) : setPhoneError(true);
-          break;
-        }
-        case 'address': {
-          const re = /[A-Za-z]{5,}.[A-Za-z]{5,}.[A-Za-z]{5,}/;
-          re.test(String(value).toLowerCase()) ? setAddressError(false) : setAddressError(true);
-          break;
-        }
-        case 'email': {
-          const re =
-            /^(?=.{1,254}$)(?=.{1,64}@)[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+(\.[-!#$%&'*+/0-9=?A-Z^_`a-z{|}~]+)*@[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?(\.[A-Za-z0-9]([A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$/;
-          re.test(String(value).toLowerCase()) ? setEmailError(false) : setEmailError(true);
-          break;
-        }
-        case 'creditCardNumber': {
-          const re = /^\d{16}$/;
-          const newVal = String(value.replace(/ */g, ''));
-          re.test(String(newVal))
-            ? setCreditCardNumberError(false)
-            : setCreditCardNumberError(true);
-          break;
-        }
-        case 'creditCardExpDate': {
-          const re = /^(0[1-9]|1[0-2])\/?([0-9]{2})$/;
-          const newVal = String(value.replace(/\//g, ''));
-          re.test(String(newVal))
-            ? setCreditCardExpDateError(false)
-            : setCreditCardExpDateError(true);
-          break;
-        }
-        case 'creditCardCVV': {
-          const re = /^\d{3}$/;
-          re.test(String(value)) ? setCreditCardCVVError(false) : setCreditCardCVVError(true);
-          break;
-        }
-      }
-    }
-  }, [value, validations]);
-
-  useEffect(() => {
-    isEmpty || nameError || phoneError || addressError || emailError
-      ? setInputValid(false)
-      : setInputValid(true);
-  }, [isEmpty, nameError, phoneError, addressError, emailError]);
-
-  return {
-    isEmpty,
-    nameError,
-    phoneError,
-    addressError,
-    emailError,
-    creditCardNumberError,
-    creditCardExpDateError,
-    creditCardCVVError,
-    inputValid,
-  };
-};
-
-const useInput = (initValue: string, validations: Validation) => {
-  const [value, setValue] = useState(initValue);
-  const [isInputBlur, setInputBlur] = useState(false);
-  const validationCheck = useValidation(value, validations);
-
-  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(e.target.value);
-  };
-
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    setInputBlur(true);
-  };
-
-  const handleCardNumber = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^\d]/gi, '');
-    const newVal = value.replace(/ */g, '');
-    e.target.value.length <= CARD_NUMBER_LENGTH ? setValue(newVal) : '';
-  };
-
-  const handleExpDate = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^\d]/gi, '');
-    const newVal = value.replace(/\//g, '');
-    e.target.value.length <= EXP_DATE_LENGTH ? setValue(newVal) : '';
-  };
-
-  const handleCVV = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.target.value.length <= CVV_LENGTH ? setValue(e.target.value) : '';
-  };
-
-  return {
-    value,
-    isInputBlur,
-    onChange,
-    handleCVV,
-    handleCardNumber,
-    handleExpDate,
-    handleBlur,
-    ...validationCheck,
-  };
-};
-
 const PersonalDataForm = (): JSX.Element => {
+  const navigate = useNavigate();
+  const { dispatch } = useContext(BasketContext);
+
   const name = useInput('', { isEmpty: true, name: true });
   const phone = useInput('', { isEmpty: true, phone: true });
   const address = useInput('', { isEmpty: true, address: true });
@@ -150,10 +19,13 @@ const PersonalDataForm = (): JSX.Element => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
+    dispatch({ type: basketActionTypes.RESET, payload: 0 });
+    alert('your order is placed, in 3 seconds you will return to the main page');
+    setTimeout(() => navigate('/'), 3000);
     console.log('submit');
   };
 
-  const getCardNumberVal = (value: string) => {
+  const formatCardNumberVal = (value: string) => {
     return value.replace(/\D/g, '').replace(/\B(?=(\d{4})+(?!\d))/g, ' ');
   };
 
@@ -170,7 +42,7 @@ const PersonalDataForm = (): JSX.Element => {
           type='text'
           name='name'
           onChange={(e) => name.onChange(e)}
-          onBlur={(e) => name.handleBlur(e)}
+          onBlur={() => name.handleBlur()}
           placeholder='Name Surname'
           value={name.value}
         />
@@ -183,7 +55,7 @@ const PersonalDataForm = (): JSX.Element => {
           placeholder='Phone number: +111111111'
           value={phone.value}
           onChange={(e) => phone.onChange(e)}
-          onBlur={(e) => phone.handleBlur(e)}
+          onBlur={() => phone.handleBlur()}
         />
         {phone.isInputBlur && phone.isEmpty && (
           <p className='error-message'>Field must be filled</p>
@@ -196,7 +68,7 @@ const PersonalDataForm = (): JSX.Element => {
           placeholder='Delivery address'
           value={address.value}
           onChange={(e) => address.onChange(e)}
-          onBlur={(e) => address.handleBlur(e)}
+          onBlur={() => address.handleBlur()}
         />
         {address.isInputBlur && address.isEmpty && (
           <p className='error-message'>Field must be filled</p>
@@ -211,7 +83,7 @@ const PersonalDataForm = (): JSX.Element => {
           placeholder='E-mail'
           value={email.value}
           onChange={(e) => email.onChange(e)}
-          onBlur={(e) => email.handleBlur(e)}
+          onBlur={() => email.handleBlur()}
         />
         {email.isInputBlur && email.isEmpty && (
           <p className='error-message'>Field must be filled</p>
@@ -225,9 +97,9 @@ const PersonalDataForm = (): JSX.Element => {
             type='text'
             name='credit-card-number'
             placeholder='Card number'
-            value={getCardNumberVal(creditCardNumber.value)}
+            value={formatCardNumberVal(creditCardNumber.value)}
             onChange={(e) => creditCardNumber.handleCardNumber(e)}
-            onBlur={(e) => creditCardNumber.handleBlur(e)}
+            onBlur={() => creditCardNumber.handleBlur()}
           />
 
           <label className='form-label'>
@@ -239,7 +111,7 @@ const PersonalDataForm = (): JSX.Element => {
               placeholder='Card number'
               value={getExpDateVal(creditCardExpDate.value)}
               onChange={(e) => creditCardExpDate.handleExpDate(e)}
-              onBlur={(e) => creditCardExpDate.handleBlur(e)}
+              onBlur={() => creditCardExpDate.handleBlur()}
             />
           </label>
 
@@ -252,7 +124,7 @@ const PersonalDataForm = (): JSX.Element => {
               placeholder='CVV'
               value={creditCardCVV.value}
               onChange={(e) => creditCardCVV.handleCVV(e)}
-              onBlur={(e) => creditCardCVV.handleBlur(e)}
+              onBlur={() => creditCardCVV.handleBlur()}
             />
           </label>
         </div>
@@ -276,7 +148,13 @@ const PersonalDataForm = (): JSX.Element => {
           type='submit'
           className='form-button'
           disabled={
-            !name.inputValid || !address.inputValid || !email.inputValid || !phone.inputValid
+            !name.inputValid ||
+            !address.inputValid ||
+            !email.inputValid ||
+            !phone.inputValid ||
+            !creditCardNumber.inputValid ||
+            !creditCardExpDate.inputValid ||
+            !creditCardCVV.inputValid
           }
         >
           Confirm
