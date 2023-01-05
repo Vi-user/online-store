@@ -1,26 +1,18 @@
 import { AppStateBasket } from '../hooks/basketReducer';
 import { products } from './data';
 
-export function ProductsAmountInBasket(basketState: AppStateBasket[] | []): number {
-  if (Object.keys(basketState).length) {
-    return basketState
-      .map((el: AppStateBasket) => el.quantity)
-      .reduce((total: number, cur: number) => total + cur, 0);
-  } else {
-    return 0;
-  }
+export function productsAmountInBasket(basketState: AppStateBasket[]): number {
+  return basketState?.reduce((total: number, cur: AppStateBasket) => total + cur.quantity, 0);
 }
 
-export function ProductsPriceInBasket(basketState: AppStateBasket[] | []): number {
-  if (Object.keys(basketState).length) {
-    const basketItemsSums = basketState.map((el: AppStateBasket) => {
-      const productObject = products.find((product) => product.id === el.id);
-      return productObject ? productObject.price * el.quantity : 0;
-    });
-    return basketItemsSums.reduce((total: number, cur: number): number => total + cur);
-  } else {
-    return 0;
-  }
+export function productsPriceInBasket(basketState: AppStateBasket[]): number {
+  return basketState?.reduce((total: number, cur: AppStateBasket): number => {
+    const productObject = products?.find((product) => product.id === cur.id);
+
+    total += productObject ? productObject?.price * cur?.quantity : 0;
+
+    return total;
+  }, 0);
 }
 
 export function itemPriceInBasket(productItem: AppStateBasket | undefined): number {
@@ -51,5 +43,12 @@ export function handleFilterChangeBrand(
     return e.target.checked
       ? [...previousState, e.target.value]
       : previousState.filter((v) => v !== e.target.value);
+  });
+}
+
+export function getSumFormat(sum: number): string {
+  return sum.toLocaleString('de-DE', {
+    style: 'currency',
+    currency: 'EUR',
   });
 }
