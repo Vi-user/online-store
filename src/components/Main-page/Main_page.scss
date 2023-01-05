@@ -77,3 +77,52 @@
   border-radius: 7px;
   font-size: 16px;
 }
+
+
+
+.sort {
+  position: relative;
+}
+
+.sort__label {
+  align-items: center;
+  display: flex;
+}
+
+.sort__popup {
+  overflow: hidden;
+  background-color: rgb(255, 255, 255);
+  border-radius: 6px;
+  box-shadow: 0 5px 15px rgb(0 0 0/ 9%);
+  margin-top: 15px;
+  padding: 10px 0;
+  position: absolute;
+  right: 0;
+  z-index: 5;
+}
+
+.sort__popup ul li {
+  cursor: pointer;
+  padding: 10px 10px;
+}
+
+.sort__popup ul li:hover {
+  background: rgba(16, 139, 255, 0.05);
+}
+
+.sort__popup ul li.active {
+  color:aqua;
+  font-weight: 700;
+}
+
+.smallGrid, .bigGrid{  
+  width: 4rem;
+}
+
+.button__product-grid {
+  width: 9rem;
+}
+
+.smallGrid {
+  margin-right: 5px;
+}
