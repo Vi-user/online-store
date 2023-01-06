@@ -32,7 +32,7 @@ const BasketList = (): JSX.Element => {
     const quantityInStock = getQuantityInStock(id);
     const quantityInBasket = getQuantityInBasket(id);
     if (quantityInStock === quantityInBasket) {
-      alert('Sorry, this is the maximum quantity of this item in stock at the moment');
+      return;
     } else {
       dispatch({ type: basketActionTypes.INCREASE, payload: id });
     }

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext } from 'react';
 import BasketSummary from '../components/Basket-summary/Basket-summary';
 import BasketList from '../components/Basket-list/Basket-list';
 import { BasketContext } from '../App';

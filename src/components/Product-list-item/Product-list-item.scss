@@ -60,4 +60,8 @@
   background-color: $color-button_background;
   color: $color-button_text;
   font-weight: bold;
+  &:disabled {
+    cursor: initial;
+    color: gray;
+  }
 }

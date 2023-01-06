@@ -51,7 +51,11 @@ const ProductListItem: FC<ProductListItemProps> = ({
             -
           </button>
           <span>{getQuantityInBasket(product.id)}</span>
-          <button className='change-quantity' onClick={() => isEnoughInStock(product.id)}>
+          <button
+            className='change-quantity'
+            onClick={() => isEnoughInStock(product.id)}
+            disabled={getQuantityInBasket(product.id) === product.stock}
+          >
             +
           </button>
         </div>

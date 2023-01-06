@@ -40,7 +40,6 @@ input[type=number] {
   cursor: pointer;
   &:disabled {
     cursor: initial;
-    background: gray;
-    color: lightgrey;
+    color: gray;
   }
 }
