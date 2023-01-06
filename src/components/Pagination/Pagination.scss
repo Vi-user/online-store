@@ -38,4 +38,9 @@ input[type=number] {
   color: $color-button_text;
   font-weight: bold;
   cursor: pointer;
+  &:disabled {
+    cursor: initial;
+    background: gray;
+    color: lightgrey;
+  }
 }
