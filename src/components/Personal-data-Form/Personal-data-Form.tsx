@@ -1,11 +1,15 @@
-import React, { useContext } from 'react';
+import React, { FC, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { BasketContext } from '../../App';
 import { basketActionTypes } from '../../hooks/basketReducer';
 import { useInput } from '../../hooks/formInput';
 import './Personal-data-Form.scss';
 
-const PersonalDataForm = (): JSX.Element => {
+interface PersonalDataFormProps {
+  togglePopup: () => void;
+}
+
+const PersonalDataForm: FC<PersonalDataFormProps> = ({ togglePopup }): JSX.Element => {
   const navigate = useNavigate();
   const { dispatch } = useContext(BasketContext);
 
@@ -20,9 +24,8 @@ const PersonalDataForm = (): JSX.Element => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     dispatch({ type: basketActionTypes.RESET, payload: 0 });
-    alert('your order is placed, in 3 seconds you will return to the main page');
+    togglePopup();
     setTimeout(() => navigate('/'), 3000);
-    console.log('submit');
   };
 
   const formatCardNumberVal = (value: string) => {
