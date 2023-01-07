@@ -1,0 +1,36 @@
+@import './../../index';
+
+.popup {
+  position: fixed;
+  top: 10px;
+  left: 30%;
+}
+
+.popup__text {
+  background: $color-title-text;
+  padding: 20px 40px;
+  border: 4px $color-border solid;
+  border-radius: 8px;
+  color: #fff7f2;
+}
+
+.popup-close-btn {
+  cursor: pointer;
+  position: absolute;
+  top: 15px;
+  right: 28px;
+  &:before,
+  &:after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 4px;
+    background: black;
+  }
+  &:before {
+    transform: rotate(45deg);
+  }
+  &:after {
+    transform: rotate(-45deg);
+  }
+}

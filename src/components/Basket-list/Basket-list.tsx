@@ -32,7 +32,7 @@ const BasketList = (): JSX.Element => {
     const quantityInStock = getQuantityInStock(id);
     const quantityInBasket = getQuantityInBasket(id);
     if (quantityInStock === quantityInBasket) {
-      alert('Sorry, this is the maximum quantity of this item in stock at the moment');
+      return;
     } else {
       dispatch({ type: basketActionTypes.INCREASE, payload: id });
     }
@@ -59,14 +59,13 @@ const BasketList = (): JSX.Element => {
     });
   };
 
-  const [productsPerPage, setProductsPerPage] = useState(10);
-  const { page, startIndexOfPage, endIndexOfPage, prevPage, nextPage } = usePagination(
-    productsPerPage,
-    basketState
-  );
+  const [productsPerPage, setProductsPerPage] = useState('10');
+  const { page, pagesQuantity, startIndexOfPage, endIndexOfPage, prevPage, nextPage } =
+    usePagination(productsPerPage, basketState);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    Number(e.target.value) > 0 ? setProductsPerPage(Number(e.target.value)) : 1;
+    const value = e.target.value.replace(/[^\d ]/gi, '');
+    setProductsPerPage(value);
   };
 
   const productsToShow = basketState.slice(startIndexOfPage, endIndexOfPage);
@@ -77,6 +76,7 @@ const BasketList = (): JSX.Element => {
         <h2 className='basket-list__title'>Products in Basket</h2>
         <Pagination
           page={page}
+          pagesQuantity={pagesQuantity}
           productsPerPage={productsPerPage}
           prevPage={prevPage}
           nextPage={nextPage}

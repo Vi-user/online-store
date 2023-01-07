@@ -4,7 +4,8 @@ import './Pagination.scss';
 
 interface PaginationProps {
   page: number;
-  productsPerPage: number;
+  pagesQuantity: number;
+  productsPerPage: string;
   prevPage: () => void;
   nextPage: () => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -12,6 +13,7 @@ interface PaginationProps {
 
 const Pagination: FC<PaginationProps> = ({
   page,
+  pagesQuantity,
   productsPerPage,
   prevPage,
   nextPage,
@@ -22,19 +24,20 @@ const Pagination: FC<PaginationProps> = ({
       <p>items per page: </p>
       <input
         className='item-quantity'
-        type='number'
+        type='text'
         value={productsPerPage}
         onChange={handleChange}
-        pattern='^[0-9]'
       />
       <p>page</p>
-      <span className='arrow-btn' onClick={prevPage}>
+      <button className='arrow-btn' onClick={prevPage} disabled={page === 1}>
         {PREV_ARROW}
-      </span>
-      <p>{page}</p>
-      <span className='arrow-btn' onClick={nextPage}>
+      </button>
+      <p>
+        {page} of {pagesQuantity}
+      </p>
+      <button className='arrow-btn' onClick={nextPage} disabled={page === pagesQuantity}>
         {NEXT_ARROW}
-      </span>
+      </button>
     </div>
   );
 };

@@ -3,6 +3,7 @@ export enum basketActionTypes {
   DELETE = 'DELETE_PRODUCT',
   INCREASE = 'INCREASE_QUANTITY',
   DECREASE = 'DECREASE_QUANTITY',
+  RESET = 'RESET_STATE',
 }
 
 export interface AppStateBasket {
@@ -12,7 +13,7 @@ export interface AppStateBasket {
 
 export type BasketState = AppStateBasket[];
 
-const initState: BasketState = [];
+export const initState: BasketState = [];
 
 export const initBasket = (initValue: BasketState = initState) => {
   const basketJSON = localStorage.getItem('basketState');
@@ -50,6 +51,8 @@ export const basketReducer = (basketState: [] | AppStateBasket[], action: action
         }
         return product;
       });
+    case basketActionTypes.RESET:
+      return initState;
     default:
       return basketState;
   }
