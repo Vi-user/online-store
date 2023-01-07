@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './Sort.scss';
 
-function Sort() {
+function Sort(): JSX.Element {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState(0);
   const list = [

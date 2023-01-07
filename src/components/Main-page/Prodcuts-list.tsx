@@ -2,7 +2,7 @@ import React from 'react';
 import { Product } from '../../utils/types';
 import ProductGrid from '../Product-grid/Product-grid';
 
-function ProductsList(props: { productCard: Product[] }) {
+function ProductsList(props: { productCard: Product[] }): JSX.Element {
   const { productCard } = props;
   return (
     <ul className='product__grid'>

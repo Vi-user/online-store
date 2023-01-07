@@ -15,7 +15,7 @@ export type BasketState = AppStateBasket[];
 
 export const initState: BasketState = [];
 
-export const initBasket = (initValue: BasketState = initState) => {
+export const initBasket = (initValue: BasketState = initState): BasketState => {
   const basketJSON = localStorage.getItem('basketState');
   return typeof basketJSON === 'string' ? JSON.parse(basketJSON) : initValue;
 };
@@ -25,7 +25,10 @@ export type actionType = {
   payload: number;
 };
 
-export const basketReducer = (basketState: [] | AppStateBasket[], action: actionType) => {
+export const basketReducer = (
+  basketState: [] | AppStateBasket[],
+  action: actionType
+): BasketState => {
   switch (action.type) {
     case basketActionTypes.ADD:
       return [

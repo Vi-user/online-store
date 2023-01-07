@@ -6,7 +6,7 @@ import Popup from '../components/Popup/Popup';
 import usePopup from '../hooks/popup';
 import './Basket.scss';
 
-const Basket = () => {
+const Basket = (): JSX.Element => {
   const { basketState } = useContext(BasketContext);
   const { isOpenPopup, togglePopup } = usePopup();
 

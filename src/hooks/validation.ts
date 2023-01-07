@@ -11,7 +11,19 @@ export interface Validation {
   creditCardCVV?: boolean;
 }
 
-export const useValidation = (value: string, validations: Validation) => {
+export interface ValidationErrors {
+  isEmpty?: boolean;
+  nameError?: boolean;
+  phoneError?: boolean;
+  addressError?: boolean;
+  emailError?: boolean;
+  creditCardNumberError?: boolean;
+  creditCardExpDateError?: boolean;
+  creditCardCVVError?: boolean;
+  inputValid?: boolean;
+}
+
+export const useValidation = (value: string, validations: Validation): ValidationErrors => {
   const [isEmpty, setEmpty] = useState(true);
   const [nameError, setNameError] = useState(false);
   const [phoneError, setPhoneError] = useState(false);

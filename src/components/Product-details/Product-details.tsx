@@ -14,7 +14,7 @@ const details: string[] = [
   'category',
 ];
 
-const ProductDetails = () => {
+const ProductDetails = (): JSX.Element => {
   const { id } = useParams();
   const product: Product = products.filter((el) => el.id === Number(id))[0];
 

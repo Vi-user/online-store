@@ -1,7 +1,19 @@
 import { useState, useEffect } from 'react';
 import { AppStateBasket } from './basketReducer';
 
-export const usePagination = (productsPerPage: string, arrayOfProducts: AppStateBasket[]) => {
+type pagination = {
+  page: number;
+  endIndexOfPage: number;
+  startIndexOfPage: number;
+  pagesQuantity: number;
+  prevPage: () => void;
+  nextPage: () => void;
+};
+
+export const usePagination = (
+  productsPerPage: string,
+  arrayOfProducts: AppStateBasket[]
+): pagination => {
   const [page, setPage] = useState(1);
 
   const numProductsPerPage = +productsPerPage;

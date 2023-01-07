@@ -1,6 +1,9 @@
 import { useState } from 'react';
 
-export default function usePopup() {
+export default function usePopup(): {
+  isOpenPopup: boolean;
+  togglePopup: () => void;
+} {
   const [isOpenPopup, setIsOpen] = useState(false);
 
   const togglePopup = (): void => {

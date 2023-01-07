@@ -22,7 +22,7 @@ export const BasketContext = createContext<{
   dispatch: () => null,
 });
 
-function App() {
+function App(): JSX.Element {
   const [basketState, dispatch] = useReducer(basketReducer, initState, initBasket);
 
   useEffect(() => {
@@ -37,7 +37,7 @@ function App() {
             <Route index element={<Main />} />
             <Route path='basket' element={<Basket />} />
             <Route path='product/:id' element={<ProductDetails />} />
-            <Route path='error' element={<ErrorPage />} />
+            <Route path='*' element={<ErrorPage />} />
           </Route>
         </Routes>
       </BasketContext.Provider>

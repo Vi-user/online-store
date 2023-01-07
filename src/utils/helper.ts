@@ -25,9 +25,14 @@ export function itemPriceInBasket(productItem: AppStateBasket | undefined): numb
 }
 
 export function handleFilterChangeCategory(
-  e: { target: { checked: boolean; value: string } },
+  e: {
+    target: {
+      checked: boolean;
+      value: string;
+    };
+  },
   setfilterCategory: React.Dispatch<React.SetStateAction<string[]>>
-) {
+): void {
   setfilterCategory((previousState) => {
     return e.target.checked
       ? [...previousState, e.target.value]
@@ -36,9 +41,14 @@ export function handleFilterChangeCategory(
 }
 
 export function handleFilterChangeBrand(
-  e: { target: { checked: boolean; value: string } },
+  e: {
+    target: {
+      checked: boolean;
+      value: string;
+    };
+  },
   setfilterBrand: React.Dispatch<React.SetStateAction<string[]>>
-) {
+): void {
   setfilterBrand((previousState) => {
     return e.target.checked
       ? [...previousState, e.target.value]
