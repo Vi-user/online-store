@@ -2,17 +2,20 @@ import React, { useState, useRef, FC, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './Dual-slider.scss';
 
+interface onChangeOpts {
+  min: number;
+  max: number;
+}
+
 interface DualSlider {
   min: number;
   max: number;
-  onChange: (...args: any[]) => void;
+  onChange: (opts: onChangeOpts) => void;
 }
 
 const DualSlider: FC<DualSlider> = ({ min, max, onChange }) => {
   const [minVal, setMinVal] = useState(min);
   const [maxVal, setMaxVal] = useState(max);
-  const minValRef = useRef(min);
-  const maxValRef = useRef(max);
   const range = useRef(null);
   useEffect(() => {
     onChange({ min: minVal, max: maxVal });
@@ -29,7 +32,6 @@ const DualSlider: FC<DualSlider> = ({ min, max, onChange }) => {
           onChange={(event) => {
             const value = Math.min(Number(event.target.value), maxVal - 1);
             setMinVal(value);
-            minValRef.current = value;
           }}
           className='thumb thumb--left'
         />
@@ -41,7 +43,6 @@ const DualSlider: FC<DualSlider> = ({ min, max, onChange }) => {
           onChange={(event) => {
             const value = Math.max(Number(event.target.value), minVal + 1);
             setMaxVal(value);
-            maxValRef.current = value;
           }}
           className='thumb thumb--right'
         />

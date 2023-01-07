@@ -6,9 +6,9 @@ import FilterCategory from '../Filter-category/Filter-category';
 import ProductGrid from '../Product-grid/Product-grid';
 import './Main_page.scss';
 import { useSearchParams } from 'react-router-dom';
+import SearchFilterService from '../service/FilterService/FilterService';
 
-const CATEGORIES: string[] = [];
-Array.from(new Set(products.map((el) => el.category))).map((category) => CATEGORIES.push(category));
+const CATEGORIES: string[] = Array.from(new Set(products.map((el) => el?.category)));
 
 const BRAND = Array.from(new Set(products.map(({ brand }) => brand)));
 
@@ -27,8 +27,8 @@ const minStockProduct: Product = products.reduce((acc, curr) =>
 
 function Main_page(): JSX.Element {
   const [productCard] = useState(products);
-  // const [filterCategory, setfilterCategory] = useState<string[]>([]);
-  // const [filterBrand, setfilterBrand] = useState<string[]>([]);
+  // const [filterCategory, setFilterCategory] = useState<string[]>([]);
+  // const [filterBrand, setFilterBrand] = useState<string[]>([]);
   const [priceMin, setPriceMin] = useState(0);
   const [priceMax, setPriceMax] = useState(0);
   const [stockMin, setStockMin] = useState(0);
@@ -41,22 +41,22 @@ function Main_page(): JSX.Element {
   const filterBrand = searchParamsBrand.get('brand')?.split(',') || [];
 
   const filterCardByFiltered: Product[] = filterCategory.length
-    ? productCard.filter((e) => filterCategory.includes(e.category))
+    ? productCard.filter((e: Product) => filterCategory.includes(e.category))
     : productCard;
 
   const filterCardByBrand: Product[] = filterBrand.length
-    ? filterCardByFiltered.filter((e) => filterBrand.includes(e.brand))
+    ? filterCardByFiltered.filter((e: Product) => filterBrand.includes(e.brand))
     : filterCardByFiltered;
 
   const filterCardByPrice: Product[] = filterCardByBrand.filter(
-    (e) => e.price >= priceMin && e.price <= priceMax
+    (e: Product) => e.price >= priceMin && e.price <= priceMax
   );
 
   const filterCardByStock: Product[] = filterCardByPrice.filter(
-    (e) => e.stock >= stockMin && e.stock <= stockMax
+    (e: Product) => e.stock >= stockMin && e.stock <= stockMax
   );
 
-  const filtererdCardbySearch: Product[] = filterCardByStock.filter((card) => {
+  const filteredCardBySearch: Product[] = filterCardByStock.filter((card: Product) => {
     return (
       card.title.toLowerCase().includes(search.toLowerCase()) ||
       card.brand.toLowerCase().includes(search.toLowerCase()) ||
@@ -84,7 +84,7 @@ function Main_page(): JSX.Element {
     setOpen(false);
   };
 
-  const sortOptionsCard: Product[] = filtererdCardbySearch.filter(() => {
+  const sortOptionsCard: Product[] = filteredCardBySearch.filter(() => {
     if (selected === 0) {
       return productCard;
     }
@@ -102,13 +102,13 @@ function Main_page(): JSX.Element {
     }
   });
 
-  // const maxPriceProduct: Product = useMemo(() => filtererdCardbySearch.reduce((acc, curr) =>
+  // const maxPriceProduct: Product = useMemo(() => filteredCardBySearch.reduce((acc, curr) =>
   // acc.price > curr.price ? acc : curr, {} as Product
-  // ), [filtererdCardbySearch])
+  // ), [filteredCardBySearch])
 
-  // const minPriceProduct: Product = useMemo(() => filtererdCardbySearch.reduce((acc, curr) =>
+  // const minPriceProduct: Product = useMemo(() => filteredCardBySearch.reduce((acc, curr) =>
   // acc.price < curr.price ? acc : curr, {} as Product
-  // ), [filtererdCardbySearch])
+  // ), [filteredCardBySearch])
 
   // const maxStockProduct: Product = products.reduce((acc, curr) =>
   //   acc.stock > curr.stock ? acc : curr
@@ -119,87 +119,89 @@ function Main_page(): JSX.Element {
 
   const onClickSmallGrid = () => {};
 
-  const setfilterCategory = (e: { target: { checked: boolean; value: string } }) => {
-    const checked = e.target.checked;
-    const value = e.target.value;
-    const currentParams = Object.fromEntries([...searchParamsCategory]);
-    if (checked) {
-      const newFilter = [...filterCategory, value].join(',');
-      setSearchParamsCategory({ ...currentParams, category: newFilter });
-    } else {
-      const indexValue = filterCategory.indexOf(value);
-      const newFilter = [
-        ...filterCategory.slice(0, indexValue),
-        ...filterCategory.slice(indexValue + 1),
-      ].join(',');
-      if (!newFilter.length) {
-        delete currentParams.category;
-        setSearchParamsCategory({
-          ...currentParams,
-        });
-      } else {
-        setSearchParamsCategory({ ...currentParams, category: newFilter });
-      }
-    }
+  const setFilterCategory = (e: { target: { checked: boolean; value: string } }) => {
+    const { checked, value } = e.target;
+
+    const newSearchParamsCategory = SearchFilterService.searchByParams(
+      checked,
+      value,
+      'category',
+      searchParamsCategory,
+      filterCategory
+    );
+    setSearchParamsCategory(newSearchParamsCategory);
   };
 
-  const setfilterBrand = (e: { target: { checked: boolean; value: string } }) => {
-    const checked = e.target.checked;
-    const value = e.target.value;
-    const currentParams = Object.fromEntries([...searchParamsBrand]);
-    console.log(currentParams);
-    if (checked) {
-      const newFilter = [...filterBrand, value].join(',');
-      setSearchParamsBrand({ ...currentParams, brand: newFilter });
-    } else {
-      const indexValue = filterBrand.indexOf(value);
-      const newFilter = [
-        ...filterBrand.slice(0, indexValue),
-        ...filterBrand.slice(indexValue + 1),
-      ].join(',');
-      if (!newFilter.length) {
-        delete currentParams.brand;
-        setSearchParamsBrand({
-          ...currentParams,
-        });
-      } else {
-        setSearchParamsBrand({ ...currentParams, brand: newFilter });
-      }
-    }
+  const setFilterBrand = (e: { target: { checked: boolean; value: string } }) => {
+    const { checked, value } = e.target;
+    const newSearchParamsCategory = SearchFilterService.searchByParams(
+      checked,
+      value,
+      'brand', //TODO
+      searchParamsBrand,
+      filterBrand
+    );
+
+    setSearchParamsBrand(newSearchParamsCategory);
   };
 
-  const handleSubmit = (e: { target: any; preventDefault: () => void }) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const form = e.target;
-    const query = form.search.value;
-    const currentParams = Object.fromEntries([...searchParams]);
+  };
 
-    setSearchParams({ ...currentParams, search: query });
-    if (!query.length) {
-      delete currentParams.search;
+  //TODO debounce
+
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setSearch(value);
+
+    const currentParams = Object.fromEntries([...searchParams]);
+    setSearchParams({ ...currentParams, value });
+
+    if (!value) {
+      delete currentParams.value;
       setSearchParams({
         ...currentParams,
       });
     }
   };
 
+  const [copied, setCopied] = useState(false);
+
+  function copy(): void {
+    const el: HTMLInputElement = document.createElement('input');
+    el.value = window.location.href;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+    }, 1000);
+  }
+
+  const resetFilters = () => {
+    setSearchParams();
+  };
+
   return (
     <div className='main_page'>
       <div className='filters__panel'>
         <div className='button__top'>
-          <button>Reset Filters</button>
-          <button>Copy Link</button>
+          <button onClick={resetFilters}>Reset Filters</button>
+          <button onClick={copy}>{!copied ? 'Copy link' : 'Copied!'}</button>
         </div>
         <div className='nav__category filters'>
           <div className='category__title'>Category</div>
           <div className='category__container'>
-            <FilterCategory categories={CATEGORIES} onFilterChange={setfilterCategory} />
+            <FilterCategory categories={CATEGORIES} onFilterChange={setFilterCategory} />
           </div>
         </div>
         <div className='nav__brand filters'>
           <div className='category__title'>Brand</div>
           <div className='category__container'>
-            <FilterCategory categories={BRAND} onFilterChange={setfilterBrand} />
+            <FilterCategory categories={BRAND} onFilterChange={setFilterBrand} />
           </div>
         </div>
         <div className='dual-slider'>
@@ -253,7 +255,7 @@ function Main_page(): JSX.Element {
 
           <div className='found'>
             Found:
-            <span>{filtererdCardbySearch.length}</span>
+            <span>{filteredCardBySearch.length}</span>
           </div>
           {/* <ProductsAmountCards productCard={state.productCard} /> */}
           <div className='form'>
@@ -263,7 +265,7 @@ function Main_page(): JSX.Element {
                 name='search'
                 placeholder='Search product...'
                 className='search__input'
-                onChange={(event) => setSearch(event.target.value)}
+                onChange={handleInputChange}
               />
             </form>
           </div>
