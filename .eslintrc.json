@@ -49,17 +49,10 @@
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/ban-ts-comment": "error",
     "@typescript-eslint/no-non-null-assertion": "error",
-<<<<<<< HEAD
-    "@typescript-eslint/explicit-module-boundary-types": "on",
-    "@typescript-eslint/no-empty-function": "on",
-    "@typescript-eslint/no-explicit-any": "error",
-    "@typescript-eslint/no-var-requires": "on",
-=======
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/no-empty-function": "error",
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-var-requires": "error",
->>>>>>> 3e8e6b70b03bb213d321bf3f117d2be2f75ebe1a
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off"
   }
