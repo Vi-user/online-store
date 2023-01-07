@@ -1,0 +1,35 @@
+@import './../index';
+
+.error-page__container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  gap: 50px;
+}
+
+.error-page__error-code {
+  font-size: 20rem;
+  font-weight: bold;
+  margin: 100px;
+}
+
+.error-page__message {
+  font-size: 5rem;
+  font-weight: bold;
+  margin: 20px;
+}
+
+.error-page__button {
+  background-color: $color-button;
+  color: $color-button_text;
+  border: 2px solid $color-border;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 15%;
+  padding: 10px;
+  transition: all 0.3s ease;
+  &:hover {
+    background: $color-button_hover;
+  }
+}
