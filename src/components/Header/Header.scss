@@ -1,0 +1,40 @@
+@import './../../index';
+
+.header {  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+}
+
+.logo {
+  font-size: 40px;
+  font-weight: 800;
+  text-shadow: 4px 1px 7px red, 0 0 1em rgb(255, 0, 140), 0 0 4.2em blue;
+  color: #ffffff;
+}
+
+.logo__basket {
+  background-image: url(../../assets/icons/basket.png);
+  background-repeat: no-repeat;
+  width: 60px;
+  height: 60px;
+  position: relative;
+}
+
+.cart__total {
+  font-size: 20px;
+  color: rgb(3, 3, 3);
+  font-weight: bold;
+}
+
+.logo__basket-sum {
+  border: 2px $color-border solid;
+  background-color: $color-button_background;
+  color: $color-button_text;
+  padding: 5px 10px;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 40%;
+  right: 40%;
+}

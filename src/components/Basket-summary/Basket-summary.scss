@@ -1,0 +1,43 @@
+@import './../../index';
+
+.basket-summary__container {
+  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 5px $color-border solid;
+  border-radius: 8px;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.basket-summary {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 20px;
+  font-size: 2rem;
+  font-weight: bold;
+  >* {
+    width: 100%;
+  }
+}
+
+.basket-summary__title {
+  border-bottom: 2px solid black;
+}
+
+.basket-summary__button {
+  text-transform: uppercase;
+  width: 50%;
+  border-radius: 8px;
+  cursor: pointer;
+  padding: 5px;
+  background-color: $color-button;
+  color: $color-button_text;
+  border: 1px solid #b34c05;
+  transition: all 0.3s ease;
+  &:hover {
+    background: $color-button_hover;
+  }
+}
