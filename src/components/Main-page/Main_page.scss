@@ -4,7 +4,7 @@
 
 .filters__panel {
   width: 25%;
-  background: aqua;
+  background: #6e7ca1;
   border: 1px solid orange;
   padding: .5%;
   height: fit-content;
@@ -18,7 +18,7 @@
   color: wheat;
 }
 
-.nav__category {
+.filters {
   border: 1px solid orange;
   border-radius: 0.5rem;
   overflow: hidden;
@@ -28,6 +28,14 @@
 
 .card-product__header{
   display: flex;
+  justify-content: space-around;
+  align-items: center;
+  button{
+    border: 2px solid #0085f9;
+    height: 42px;
+    border-radius: 7px;
+    font-size: 16px;
+  }
 }
 
 .card-product{
@@ -37,4 +45,82 @@
 .product__grid{  
   grid-template-columns: 11em 11em 11em 11em 11em 11em;
   display: grid;
+}
+
+.category__container{
+  height: 20rem;
+  overflow: auto;
+}
+
+.dual-slider{
+  height: 14vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  h3 {
+    padding-bottom: 15px;
+  }
+}
+
+.search-product input{
+  border: 2px solid #0085f9;
+  height: 42px;
+  border-radius: 7px;
+  font-size: 16px;
+}
+
+.button__top > button{
+  border: 2px solid #0085f9;
+  height: 42px;
+  border-radius: 7px;
+  font-size: 16px;
+}
+
+.sort {
+  position: relative;
+}
+
+.sort__label {
+  align-items: center;
+  display: flex;
+}
+
+.sort__popup {
+  overflow: hidden;
+  background-color: rgb(255, 255, 255);
+  border-radius: 6px;
+  box-shadow: 0 5px 15px rgb(0 0 0/ 9%);
+  margin-top: 15px;
+  padding: 10px 0;
+  position: absolute;
+  right: 0;
+  z-index: 5;
+}
+
+.sort__popup ul li {
+  cursor: pointer;
+  padding: 10px 10px;
+}
+
+.sort__popup ul li:hover {
+  background: rgba(16, 139, 255, 0.05);
+}
+
+.sort__popup ul li.active {
+  color:aqua;
+  font-weight: 700;
+}
+
+.smallGrid, .bigGrid{  
+  width: 4rem;
+}
+
+.button__product-grid {
+  width: 9rem;
+}
+
+.smallGrid {
+  margin-right: 5px;
 }

@@ -15,9 +15,9 @@ const ProductGrid: FC<ProductGridProps> = ({ product }: ProductGridProps) => {
     <>
       <div className='product__card'>
         <div className='product__item'>
-          <img className='product__item' src={product.thumbnail} alt={product.title} />
+          <img className='product__item' src={product.thumbnail} alt={product.title} onClick={() => navigate(`/product/${product.id}`)}/>
           <div className='product__text'>
-            <div className='product__title'>{product.title}</div>
+            <div className='product__title' onClick={() => navigate(`/product/${product.id}`)}>{product.title}</div>
           </div>
           <div className='product__buttons'>
             <ButtonProductStatus id={Number(product.id)} type={''} />

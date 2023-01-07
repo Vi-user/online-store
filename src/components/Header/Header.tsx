@@ -4,9 +4,7 @@ import { Link } from 'react-router-dom';
 import { productsPriceInBasket, productsAmountInBasket, getSumFormat } from '../../utils/helper';
 import { BasketContext } from '../../App';
 
-// interface HeaderProps {JSX: Element;}
-// const Header: FC<HeaderProps> = () => (
-const Header = () => {
+const Header = (): JSX.Element => {
   const { basketState } = useContext(BasketContext);
 
   return (
