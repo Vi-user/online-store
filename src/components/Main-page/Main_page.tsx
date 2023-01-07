@@ -117,7 +117,7 @@ function Main_page(): JSX.Element {
   //   acc.stock < curr.stock ? acc : curr
   // );
 
-  const onClickSmallGrid = () => {};
+  // const onClickSmallGrid = () => {};
 
   const setFilterCategory = (e: { target: { checked: boolean; value: string } }) => {
     const { checked, value } = e.target;
@@ -269,10 +269,10 @@ function Main_page(): JSX.Element {
               />
             </form>
           </div>
-          <div className='button__product-grid'>
+          {/* <div className='button__product-grid'>
             <button onClick={() => onClickSmallGrid()} className='smallGrid'></button>
             <button className='bigGrid'></button>
-          </div>
+          </div> */}
         </div>
         <ul className='product__grid'>
           {sortOptionsCard.map((product) => (
