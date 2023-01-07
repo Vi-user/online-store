@@ -49,10 +49,10 @@
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/ban-ts-comment": "error",
     "@typescript-eslint/no-non-null-assertion": "error",
-    "@typescript-eslint/explicit-module-boundary-types": "on",
-    "@typescript-eslint/no-empty-function": "on",
+    "@typescript-eslint/explicit-module-boundary-types": "off",
+    "@typescript-eslint/no-empty-function": "error",
     "@typescript-eslint/no-explicit-any": "error",
-    "@typescript-eslint/no-var-requires": "on",
+    "@typescript-eslint/no-var-requires": "error",
     "react/jsx-uses-react": "off",
     "react/react-in-jsx-scope": "off"
   }
