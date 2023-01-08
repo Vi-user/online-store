@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { EURO_SYMBOL, products } from '../../utils/data';
 import { Product } from '../../utils/types';
 import DualSlider from '../Dual-slider/Dual-slider';
@@ -25,7 +25,7 @@ const minStockProduct: Product = products.reduce((acc, curr) =>
   acc.stock < curr.stock ? acc : curr
 );
 
-function Main_page(): JSX.Element {
+function Main_page() {
   const [productCard] = useState(products);
   // const [filterCategory, setFilterCategory] = useState<string[]>([]);
   // const [filterBrand, setFilterBrand] = useState<string[]>([]);
@@ -33,12 +33,14 @@ function Main_page(): JSX.Element {
   const [priceMax, setPriceMax] = useState(0);
   const [stockMin, setStockMin] = useState(0);
   const [stockMax, setStockMax] = useState(0);
-  const [search, setSearch] = useState('');
+  // const [search, setSearch] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
-  const [searchParamsCategory, setSearchParamsCategory] = useSearchParams();
-  const [searchParamsBrand, setSearchParamsBrand] = useSearchParams();
-  const filterCategory = searchParamsCategory.get('category')?.split(',') || [];
-  const filterBrand = searchParamsBrand.get('brand')?.split(',') || [];
+  // const [searchParamsCategory, setSearchParamsCategory] = useSearchParams();
+  // const [searchParamsBrand, setSearchParamsBrand] = useSearchParams();
+  const filterCategory = searchParams.get('category')?.split(',') || [];
+  const filterBrand = searchParams.get('brand')?.split(',') || [];
+  const valueInput = searchParams.get('value') || '';
+  const sortProduct = searchParams.get('sort') || '';
 
   const filterCardByFiltered: Product[] = filterCategory.length
     ? productCard.filter((e: Product) => filterCategory.includes(e.category))
@@ -58,14 +60,14 @@ function Main_page(): JSX.Element {
 
   const filteredCardBySearch: Product[] = filterCardByStock.filter((card: Product) => {
     return (
-      card.title.toLowerCase().includes(search.toLowerCase()) ||
-      card.brand.toLowerCase().includes(search.toLowerCase()) ||
-      card.description.toLowerCase().includes(search.toLowerCase()) ||
-      card.category.toLowerCase().includes(search.toLowerCase()) ||
-      card.price.toString().includes(search) ||
-      card.stock.toString().includes(search) ||
-      card.discountPercentage.toString().includes(search) ||
-      card.rating.toString().includes(search)
+      card.title.toLowerCase().includes(valueInput.toLowerCase()) ||
+      card.brand.toLowerCase().includes(valueInput.toLowerCase()) ||
+      card.description.toLowerCase().includes(valueInput.toLowerCase()) ||
+      card.category.toLowerCase().includes(valueInput.toLowerCase()) ||
+      card.price.toString().includes(valueInput) ||
+      card.stock.toString().includes(valueInput) ||
+      card.discountPercentage.toString().includes(valueInput) ||
+      card.rating.toString().includes(valueInput)
     );
   });
 
@@ -79,35 +81,30 @@ function Main_page(): JSX.Element {
     ' Sort by discount DESC',
   ];
 
-  const onClickListItem = (i: React.SetStateAction<number>) => {
+  const onClickListItem = (i: number) => {
     setSelected(i);
     setOpen(false);
   };
 
-  const sortOptionsCard: Product[] = filteredCardBySearch.filter(() => {
-    if (selected === 0) {
-      return productCard;
-    }
+  const sortOptionsCard: Product[] = useMemo(() => {
     if (selected === 1) {
-      return productCard.sort((a, b) => a.price - b.price);
+      return filteredCardBySearch.sort((a, b) => a.price - b.price);
+    } else if (selected === 2) {
+      return filteredCardBySearch.sort((a, b) => b.price - a.price);
+    } else if (selected === 3) {
+      return filteredCardBySearch.sort((a, b) => a.discountPercentage - b.discountPercentage);
+    } else if (selected === 4) {
+      return filteredCardBySearch.sort((a, b) => b.discountPercentage - a.discountPercentage);
+    } else {
+      return filteredCardBySearch;
     }
-    if (selected === 2) {
-      return productCard.sort((a, b) => b.price - a.price);
-    }
-    if (selected === 3) {
-      return productCard.sort((a, b) => a.discountPercentage - b.discountPercentage);
-    }
-    if (selected === 4) {
-      return productCard.sort((a, b) => b.discountPercentage - a.discountPercentage);
-    }
-  });
+  }, [selected, filteredCardBySearch]);
+
+  // const minPriceProduct: Product = useMemo(() => [...sortOptionsCard].sort((a, b) => a.price - b.price)[0], [JSON.stringify(sortOptionsCard)]);
+  // const maxPriceProduct: Product = useMemo(() => [...sortOptionsCard].sort((a, b) => b.price - a.price)[0], [JSON.stringify(sortOptionsCard)]);
 
   // const maxPriceProduct: Product = useMemo(() => filteredCardBySearch.reduce((acc, curr) =>
   // acc.price > curr.price ? acc : curr, {} as Product
-  // ), [filteredCardBySearch])
-
-  // const minPriceProduct: Product = useMemo(() => filteredCardBySearch.reduce((acc, curr) =>
-  // acc.price < curr.price ? acc : curr, {} as Product
   // ), [filteredCardBySearch])
 
   // const maxStockProduct: Product = products.reduce((acc, curr) =>
@@ -126,10 +123,10 @@ function Main_page(): JSX.Element {
       checked,
       value,
       'category',
-      searchParamsCategory,
+      searchParams,
       filterCategory
     );
-    setSearchParamsCategory(newSearchParamsCategory);
+    setSearchParams(newSearchParamsCategory);
   };
 
   const setFilterBrand = (e: { target: { checked: boolean; value: string } }) => {
@@ -138,11 +135,11 @@ function Main_page(): JSX.Element {
       checked,
       value,
       'brand', //TODO
-      searchParamsBrand,
+      searchParams,
       filterBrand
     );
 
-    setSearchParamsBrand(newSearchParamsCategory);
+    setSearchParams(newSearchParamsCategory);
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -153,7 +150,7 @@ function Main_page(): JSX.Element {
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
-    setSearch(value);
+    // setSearch(value);
 
     const currentParams = Object.fromEntries([...searchParams]);
     setSearchParams({ ...currentParams, value });
@@ -195,13 +192,21 @@ function Main_page(): JSX.Element {
         <div className='nav__category filters'>
           <div className='category__title'>Category</div>
           <div className='category__container'>
-            <FilterCategory categories={CATEGORIES} onFilterChange={setFilterCategory} />
+            <FilterCategory
+              categories={CATEGORIES}
+              onFilterChange={setFilterCategory}
+              filterArray={filterCategory}
+            />
           </div>
         </div>
         <div className='nav__brand filters'>
           <div className='category__title'>Brand</div>
           <div className='category__container'>
-            <FilterCategory categories={BRAND} onFilterChange={setFilterBrand} />
+            <FilterCategory
+              categories={BRAND}
+              onFilterChange={setFilterBrand}
+              filterArray={filterBrand}
+            />
           </div>
         </div>
         <div className='dual-slider'>
@@ -244,6 +249,7 @@ function Main_page(): JSX.Element {
                       key={i}
                       onClick={() => onClickListItem(i)}
                       className={selected === i ? 'active' : ''}
+                      value={sortProduct}
                     >
                       {name}
                     </li>
@@ -265,6 +271,7 @@ function Main_page(): JSX.Element {
                 name='search'
                 placeholder='Search product...'
                 className='search__input'
+                value={valueInput}
                 onChange={handleInputChange}
               />
             </form>
