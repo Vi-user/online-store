@@ -1,46 +1,44 @@
 import React, { useMemo, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { useSearch } from '../../hooks/useSearch';
 import { EURO_SYMBOL, products } from '../../utils/data';
 import { Product } from '../../utils/types';
 import DualSlider from '../Dual-slider/Dual-slider';
 import FilterCategory from '../Filter-category/Filter-category';
 import ProductGrid from '../Product-grid/Product-grid';
-import './Main_page.scss';
-import { useSearchParams } from 'react-router-dom';
 import SearchFilterService from '../service/FilterService/FilterService';
+import './Main_page.scss';
 
 const CATEGORIES: string[] = Array.from(new Set(products.map((el) => el?.category)));
 
 const BRAND = Array.from(new Set(products.map(({ brand }) => brand)));
 
-const maxPriceProduct: Product = products.reduce((acc, curr) =>
+const maxPriceProducts: Product = products.reduce((acc, curr) =>
   acc.price > curr.price ? acc : curr
 );
-const minPriceProduct: Product = products.reduce((acc, curr) =>
+const minPriceProducts: Product = products.reduce((acc, curr) =>
   acc.price < curr.price ? acc : curr
 );
-const maxStockProduct: Product = products.reduce((acc, curr) =>
+const maxStockProducts: Product = products.reduce((acc, curr) =>
   acc.stock > curr.stock ? acc : curr
 );
-const minStockProduct: Product = products.reduce((acc, curr) =>
+const minStockProducts: Product = products.reduce((acc, curr) =>
   acc.stock < curr.stock ? acc : curr
 );
 
-function Main_page() {
+function Main_page(): JSX.Element {
   const [productCard] = useState(products);
-  // const [filterCategory, setFilterCategory] = useState<string[]>([]);
-  // const [filterBrand, setFilterBrand] = useState<string[]>([]);
-  const [priceMin, setPriceMin] = useState(0);
-  const [priceMax, setPriceMax] = useState(0);
-  const [stockMin, setStockMin] = useState(0);
-  const [stockMax, setStockMax] = useState(0);
-  // const [search, setSearch] = useState('');
+  const [priceMin, setPriceMin] = useState(10);
+  const [priceMax, setPriceMax] = useState(1749);
+  const [stockMin, setStockMin] = useState(2);
+  const [stockMax, setStockMax] = useState(150);
   const [searchParams, setSearchParams] = useSearchParams();
-  // const [searchParamsCategory, setSearchParamsCategory] = useSearchParams();
-  // const [searchParamsBrand, setSearchParamsBrand] = useSearchParams();
+  const { setSearch, valueInput } = useSearch();
   const filterCategory = searchParams.get('category')?.split(',') || [];
   const filterBrand = searchParams.get('brand')?.split(',') || [];
-  const valueInput = searchParams.get('value') || '';
-  const sortProduct = searchParams.get('sort') || '';
+  const sortProduct = searchParams.get('sort') || '0';
+
+  // const dualFilterMin = searchParams.get('price')?.split(',') || [];
 
   const filterCardByFiltered: Product[] = filterCategory.length
     ? productCard.filter((e: Product) => filterCategory.includes(e.category))
@@ -72,7 +70,6 @@ function Main_page() {
   });
 
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState(0);
   const list = [
     ' .....',
     ' Sort by price ASC',
@@ -81,40 +78,54 @@ function Main_page() {
     ' Sort by discount DESC',
   ];
 
-  const onClickListItem = (i: number) => {
-    setSelected(i);
+  const onClickListItem = (i: string) => {
+    const currentParams = Object.fromEntries([...searchParams]);
+    setSearchParams({ ...currentParams, sort: String(i) });
     setOpen(false);
   };
 
   const sortOptionsCard: Product[] = useMemo(() => {
-    if (selected === 1) {
-      return filteredCardBySearch.sort((a, b) => a.price - b.price);
-    } else if (selected === 2) {
-      return filteredCardBySearch.sort((a, b) => b.price - a.price);
-    } else if (selected === 3) {
-      return filteredCardBySearch.sort((a, b) => a.discountPercentage - b.discountPercentage);
-    } else if (selected === 4) {
-      return filteredCardBySearch.sort((a, b) => b.discountPercentage - a.discountPercentage);
-    } else {
-      return filteredCardBySearch;
+    switch (sortProduct) {
+      case '1': {
+        return filteredCardBySearch.sort((a, b) => a.price - b.price);
+        break;
+      }
+      case '2': {
+        return filteredCardBySearch.sort((a, b) => b.price - a.price);
+        break;
+      }
+      case '3': {
+        return filteredCardBySearch.sort((a, b) => b.discountPercentage - a.discountPercentage);
+        break;
+      }
+      case '4': {
+        return filteredCardBySearch.sort((a, b) => a.discountPercentage - b.discountPercentage);
+        break;
+      }
+      default: {
+        return filteredCardBySearch;
+        break;
+      }
     }
-  }, [selected, filteredCardBySearch]);
+  }, [sortProduct, JSON.stringify(filteredCardBySearch)]);
 
-  // const minPriceProduct: Product = useMemo(() => [...sortOptionsCard].sort((a, b) => a.price - b.price)[0], [JSON.stringify(sortOptionsCard)]);
-  // const maxPriceProduct: Product = useMemo(() => [...sortOptionsCard].sort((a, b) => b.price - a.price)[0], [JSON.stringify(sortOptionsCard)]);
+  const minPriceProduct: Product = useMemo(
+    () => [...sortOptionsCard].sort((a, b) => a.price - b.price)[0],
+    [JSON.stringify(sortOptionsCard)]
+  );
+  const maxPriceProduct: Product = useMemo(
+    () => [...sortOptionsCard].sort((a, b) => b.price - a.price)[0],
+    [JSON.stringify(sortOptionsCard)]
+  );
 
-  // const maxPriceProduct: Product = useMemo(() => filteredCardBySearch.reduce((acc, curr) =>
-  // acc.price > curr.price ? acc : curr, {} as Product
-  // ), [filteredCardBySearch])
-
-  // const maxStockProduct: Product = products.reduce((acc, curr) =>
-  //   acc.stock > curr.stock ? acc : curr
-  // );
-  // const minStockProduct: Product = products.reduce((acc, curr) =>
-  //   acc.stock < curr.stock ? acc : curr
-  // );
-
-  // const onClickSmallGrid = () => {};
+  const minStockProduct: Product = useMemo(
+    () => [...sortOptionsCard].sort((a, b) => a.stock - b.stock)[0],
+    [JSON.stringify(sortOptionsCard)]
+  );
+  const maxStockProduct: Product = useMemo(
+    () => [...sortOptionsCard].sort((a, b) => b.stock - a.stock)[0],
+    [JSON.stringify(sortOptionsCard)]
+  );
 
   const setFilterCategory = (e: { target: { checked: boolean; value: string } }) => {
     const { checked, value } = e.target;
@@ -146,23 +157,6 @@ function Main_page() {
     e.preventDefault();
   };
 
-  //TODO debounce
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    // setSearch(value);
-
-    const currentParams = Object.fromEntries([...searchParams]);
-    setSearchParams({ ...currentParams, value });
-
-    if (!value) {
-      delete currentParams.value;
-      setSearchParams({
-        ...currentParams,
-      });
-    }
-  };
-
   const [copied, setCopied] = useState(false);
 
   function copy(): void {
@@ -180,6 +174,21 @@ function Main_page() {
 
   const resetFilters = () => {
     setSearchParams();
+  };
+
+  const gridBigSmall = !!searchParams.get('big');
+
+  const [isBigSize, setBigSize] = useState<boolean>(false);
+
+  const ToggleClass = () => {
+    const currentParams = Object.fromEntries([...searchParams]);
+    setBigSize((prev) => !prev);
+    if (gridBigSmall) {
+      delete currentParams.big;
+      setSearchParams({ ...currentParams });
+    } else {
+      setSearchParams({ ...currentParams, big: String(true) });
+    }
   };
 
   return (
@@ -212,8 +221,10 @@ function Main_page() {
         <div className='dual-slider'>
           <h3>Price {EURO_SYMBOL}</h3>
           <DualSlider
-            min={minPriceProduct.price}
-            max={maxPriceProduct.price}
+            min={minPriceProduct?.price || priceMin}
+            max={maxPriceProduct?.price || priceMax}
+            totalMin={minPriceProducts.price}
+            totalMax={maxPriceProducts.price}
             onChange={({ min, max }) => {
               setPriceMin(min);
               setPriceMax(max);
@@ -223,8 +234,10 @@ function Main_page() {
         <div className='dual-slider'>
           <h3>Stock</h3>
           <DualSlider
-            min={minStockProduct.stock}
-            max={maxStockProduct.stock}
+            min={minStockProduct?.stock || stockMin}
+            max={maxStockProduct?.stock || stockMax}
+            totalMin={minStockProducts.stock}
+            totalMax={maxStockProducts.stock}
             onChange={({ min, max }) => {
               setStockMin(min);
               setStockMax(max);
@@ -239,7 +252,13 @@ function Main_page() {
           <div className='sort'>
             <div className='sort__label'>
               <b>Sort options: </b>
-              <span onClick={() => setOpen(!open)}>{list[selected]}</span>
+              <span
+                onClick={() => {
+                  setOpen(true);
+                }}
+              >
+                {list[Number(sortProduct)]}
+              </span>
             </div>
             {open && (
               <div className='sort__popup'>
@@ -247,9 +266,10 @@ function Main_page() {
                   {list.map((name, i) => (
                     <li
                       key={i}
-                      onClick={() => onClickListItem(i)}
-                      className={selected === i ? 'active' : ''}
-                      value={sortProduct}
+                      onClick={() => {
+                        onClickListItem(String(i));
+                      }}
+                      className={Number(sortProduct) === i ? 'active' : ''}
                     >
                       {name}
                     </li>
@@ -272,24 +292,43 @@ function Main_page() {
                 placeholder='Search product...'
                 className='search__input'
                 value={valueInput}
-                onChange={handleInputChange}
+                onChange={setSearch}
               />
             </form>
           </div>
-          {/* <div className='button__product-grid'>
-            <button onClick={() => onClickSmallGrid()} className='smallGrid'></button>
-            <button className='bigGrid'></button>
-          </div> */}
+          <div className='button__product-grid'>
+            <button className='smallGrid' onClick={ToggleClass} disabled={!isBigSize}>
+              Small
+            </button>
+            <button className='bigGrid' onClick={ToggleClass} disabled={isBigSize}>
+              Big
+            </button>
+          </div>
         </div>
-        <ul className='product__grid'>
-          {sortOptionsCard.map((product) => (
-            <ProductGrid key={product.id} product={product} />
-          ))}
+        <ul className={isBigSize ? 'product__grid__small' : 'product__grid'}>
+          {/* <ul className='product__grid'> */}
+          {sortOptionsCard.length ? (
+            sortOptionsCard.map((product) => <ProductGrid key={product.id} product={product} />)
+          ) : (
+            <h2 className='empty-main-message'>No products found!</h2>
+          )}
         </ul>
         {/* <ProductsList productCard={state.productCard} /> */}
       </div>
     </div>
   );
 }
-
+console.log(
+  'Общая - 246/300\n',
+  'Страница товаров с фильтрами 110/120\n',
+  '1.4 при применении любого фильтра, должны динамически пересчитываться все фильтры -10\n',
+  'Страница корзины товаров 50/60\n',
+  '5. Реализован промокод блок -10\n',
+  'Модальное окно оформления товара 45/50\n',
+  '2.2 реализована автоматическая смена логотипа платежной системы -5\n',
+  'Страница с описанием товара 35/40\n',
+  '1.5 присутствует кнопка быстрой покупки товара -5\n',
+  'Страница 404 6/10\n',
+  '2. Страница не реагирует на некорректные query-параметры -4\n'
+);
 export default Main_page;

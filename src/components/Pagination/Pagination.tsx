@@ -9,6 +9,7 @@ interface PaginationProps {
   prevPage: () => void;
   nextPage: () => void;
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleClickPage: (p: number) => void;
 }
 
 const Pagination: FC<PaginationProps> = ({
@@ -18,6 +19,7 @@ const Pagination: FC<PaginationProps> = ({
   prevPage,
   nextPage,
   handleChange,
+  handleClickPage,
 }) => {
   return (
     <div className='pagination'>
@@ -29,13 +31,27 @@ const Pagination: FC<PaginationProps> = ({
         onChange={handleChange}
       />
       <p>page</p>
-      <button className='arrow-btn' onClick={prevPage} disabled={page === 1}>
+      <button
+        className='arrow-btn'
+        onClick={() => {
+          prevPage();
+          handleClickPage(page - 1);
+        }}
+        disabled={page === 1}
+      >
         {PREV_ARROW}
       </button>
       <p>
         {page} of {pagesQuantity}
       </p>
-      <button className='arrow-btn' onClick={nextPage} disabled={page === pagesQuantity}>
+      <button
+        className='arrow-btn'
+        onClick={() => {
+          nextPage();
+          handleClickPage(page + 1);
+        }}
+        disabled={page === pagesQuantity}
+      >
         {NEXT_ARROW}
       </button>
     </div>
