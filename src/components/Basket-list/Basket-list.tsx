@@ -7,8 +7,11 @@ import Pagination from '../Pagination/Pagination';
 import { usePagination } from '../../hooks/pagination';
 import './Basket-list.scss';
 import ProductListItem from '../Product-list-item/Product-list-item';
+import { useSearchParams } from 'react-router-dom';
 
 const BasketList = (): JSX.Element => {
+  const [pageNumber, setPageNumber] = useSearchParams();
+
   const { basketState, dispatch } = useContext(BasketContext);
 
   const getQuantityInStock = (id: number): number | undefined => {
@@ -58,17 +61,25 @@ const BasketList = (): JSX.Element => {
       }
     });
   };
-
-  const [productsPerPage, setProductsPerPage] = useState('10');
+  const productOnPage = pageNumber.get('limit') || '10';
+  const currentPage = Number(pageNumber.get('page')) || 1;
+  const [productsPerPage, setProductsPerPage] = useState(productOnPage);
   const { page, pagesQuantity, startIndexOfPage, endIndexOfPage, prevPage, nextPage } =
     usePagination(productsPerPage, basketState);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const currentParams = Object.fromEntries([...pageNumber]);
     const value = e.target.value.replace(/[^\d ]/gi, '');
     setProductsPerPage(value);
+    setPageNumber({ ...currentParams, limit: value });
   };
 
   const productsToShow = basketState.slice(startIndexOfPage, endIndexOfPage);
+
+  const handleClickPage = (p: number) => {
+    const currentParams = Object.fromEntries([...pageNumber]);
+    setPageNumber({ ...currentParams, page: `${p}` });
+  };
 
   return (
     <div className='basket-list'>
@@ -81,6 +92,7 @@ const BasketList = (): JSX.Element => {
           prevPage={prevPage}
           nextPage={nextPage}
           handleChange={handleChange}
+          handleClickPage={handleClickPage}
         />
       </div>
       <ul className='basket-list__box'>{basketItems()}</ul>
