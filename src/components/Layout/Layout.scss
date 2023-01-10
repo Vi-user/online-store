@@ -1,0 +1,23 @@
+@import './../../index';
+
+a {
+  text-decoration: none;
+}
+
+.header__wrapper, .footer__wrapper {
+  max-width: 1420px;
+  margin: auto;  
+  background-color: $color-background_layout;
+}
+
+.main__wrapper {
+  max-width: 1420px;  
+  margin: auto;
+  background-color: #6e7ca1;;
+  min-height: calc(100vh - 80px);
+}
+
+.logo__footer {
+  display: flex;
+  justify-content: center;
+}
